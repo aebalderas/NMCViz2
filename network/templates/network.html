@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% comment %}
+    
+Main page of the website.
+
+{% endcomment %}
+
+{% block head %}
+    <title>NMC</title>
+{% endblock %}
+
+{% block body %}
+    <header>
+        <h1>NMC Visualizer</h1>
+    </header>
+    Networks:
+    <ul>
+	{% for db in databases %}
+	  <li><a href='visualize/{{ db }}'>{{ db }}</a></li>
+	{% endfor %}	
+	</ul>
+	<br>
+	<a href='new'>New</a>
+{% endblock %}
