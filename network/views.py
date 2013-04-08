@@ -28,33 +28,37 @@ def load_data(request, network_name, start, interval, terminate):
     dbc = psycopg2.connect(host=network.host, user=network.user, password=network.password, database=network.database)
     cursor = dbc.cursor()
     
-    sql = 'select linkid, from_sec, to_sec, flow_15min as volume, v_over_c from compute_v_over_c(%s,%s,%s) a,links b,bus_route c,bus_route_link d  where b.id=a.linkid and d.link=b.id and c.id=d.route order by from_sec;' % (start, interval, terminate)
-    cursor.execute(sql)
-    
-    time_data = []
-    last_time = None
-    last_timestep = None
-   
-    for row in cursor:
-        
-        if row[1] != last_time:
+    sql = 'select linkid, from_sec, to_sec, flow_15min as volume, v_over_c from compute_v_over_c(%s,%s,%s) a,links b,bus_route c,bus_route_link d  where b.id=a.linkid and d.link=b.id and c.id=d.route order by from_sec;' % (interval, start, terminate)
+    try:
+        cursor.execute(sql)
+    except Exception, e:
+        error_str = e.args[0]
+        result = {'status': 'Database error: %s' % error_str}
+    else:  
+        time_data = []
+        last_time = None
+        last_timestep = None
+       
+        for row in cursor:
             
-            if last_timestep != None:
-                time_data.append(last_timestep)
+            if row[1] != last_time:
                 
-            last_time = row[1]
-                
-            last_timestep = {'linkids': [], 'start': row[1], 'end': row[2], 'volume': [], 'v_over_c': []}
+                if last_timestep != None:
+                    time_data.append(last_timestep)
+                    
+                last_time = row[1]
+                    
+                last_timestep = {'linkids': [], 'start': row[1], 'end': row[2], 'volume': [], 'v_over_c': []}
+            
+            last_timestep['linkids'].append(row[0])
+            last_timestep['volume'].append(row[3])
+            last_timestep['v_over_c'].append(row[4])
+            
+        if last_timestep != None:
+            time_data.append(last_timestep)
+            
+        result = {'status': 'OK', 'attributes': ['volume', 'v_over_c'], 'data': time_data}
         
-        last_timestep['linkids'].append(row[0])
-        last_timestep['volume'].append(row[3])
-        last_timestep['v_over_c'].append(float(row[4]))
-        
-    if last_timestep != None:
-        time_data.append(last_timestep)
-        
-    result = {'attributes': ['volume', 'v_over_c'], 'data': time_data}
-    
     return HttpResponse(simplejson.dumps(result), mimetype='application/json')
 
 def visualize(request, name):

@@ -6,7 +6,7 @@ Main page of the website.
 {% endcomment %}
 
 {% block head %}
-<link href="{{ STATIC_URL }}css/vis.css" rel="stylesheet" type="text/css" />
+<link href="{{ STATIC_URL }}/css/vis.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/jquery.cookies.2.2.0.min.js"></script>
 <script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/OpenLayers.js"></script>
 <script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/paths.js"></script>
@@ -33,13 +33,13 @@ Main page of the website.
 <label>Color links by:</label>
 </div>
 <div style="width:49%;float:left;position:relative">
-<select id='link_color' onchange="redraw()"></select>
+<select id='link_color' onchange="link_color_selection()"></select>
 </div>
 <div style="width:49%;float:left;position:relative">
 <label>Color nodes by:</label>
 </div>
 <div style="width:49%;float:left;position:relative">
-<select id='node_color' onchange="redraw()"></select>
+<select id='node_color' onchange="node_color_selection()"></select>
 </div>
 </div>
 <div id="dataPanel" class="col1">
@@ -48,6 +48,7 @@ Main page of the website.
 <div style="width:80px;float:left;position:relative;left:8%">Interval:</div><input type="text" id="data_interval" value="" onkeyup="check_load_data()" style="width:80px;right:20px;position:absolute;"><br>
 <div style="width:80px;float:left;position:relative;left:8%">End:</div><input type="text" id="data_end" value="" onkeyup="check_load_data()" style="width:80px;right:20px;position:absolute;"><br>
 <input type="button" id="load_data" value="Load Data" disabled="true" onclick='load_data()'>
+<input type="button" id="animate" value="Animate" disabled="true" onclick='animate()'>
 </div>
 </div>
 <div id="selectionPanel" class="col2">Select by:
