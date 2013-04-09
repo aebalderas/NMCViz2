@@ -435,6 +435,12 @@ function val_to_color(v, min, max)
 	return "#" + rs + gs + bs;
 }
 
+function val_to_width(v, min, max)
+{
+    val = Math.floor((v / max) * 10);
+    return val    
+}
+
 function toggleMap(onOff)
 {
 	if (osm.getVisibility())

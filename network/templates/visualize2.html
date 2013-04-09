@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+                <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+                <link rel="stylesheet" href="./ui.css" />
+                <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+                <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+        
+    </head>
+    <body>
+        <div id="main_container">
+        
+          <div id="top_container">
+            
+            <div id="network_panel">
+              <p>Network</p>
+	          <button class=" awesome blue">Toggle Map</button> 
+	          <table>
+	            <tr><td>Start</td>   <td><input type="text" id="data_start"    value="" onkeyup="check_load_data()"></td></tr>
+	            <tr><td>Interval</td><td><input type="text" id="data_interval" value="" onkeyup="check_load_data()"></td></tr>
+	            <tr><td>End</td>     <td><input type="text" id="data_end"      value="" onkeyup="check_load_data()"></td></tr>
+	          </table>
+	          <input type="button" id="load_data" value="Load Data" disabled="true" onclick="load_data()">
+            </div>
+            
+            
+            <div id="link_panel">
+	          <p>Links</p>
+	          <table>
+	          <tr>
+		        <td>Offset</td>
+		        <td><input id="link_offset" type="text" value="0.0001" onkeypress="offsetLinks(event)"></td>    
+	          </tr>
+	          <tr>
+	            <td>Color By</td> 
+	            <td><select id='link_color' onchange="redraw()"></select></td>
+	          </tr>
+	          </table>
+	          <p>Show Types:</p>
+	          <input type="checkbox" name="nodetypes" value={{ nt }} checked="yes" onclick="redraw()"> 1<br/>
+	          <input type="checkbox" name="nodetypes" value={{ nt }} checked="yes" onclick="redraw()"> 100<br/>
+	          
+	          
+            </div>
+            
+            <div id="nodes_panel">
+	          <p>Nodes</p>
+	          <table>
+	          <tr>
+	            <td>Color By</td> 
+	            <td><select id='node_color' onchange="redraw()"></select></td>
+	          </tr>
+	          </table>
+	          <p>Show Types:</p>
+	          <input type="checkbox" name="nodetypes" value={{ nt }} checked="yes" onclick="redraw()"> 1<br/>
+	          <input type="checkbox" name="nodetypes" value={{ nt }} checked="yes" onclick="redraw()"> 100<br/>    
+            </div>
+            
+          </div>
+          
+          <div id="bottom_container">
+          </div>
+        
+        </div>
+        
+    </body>
+</html>

@@ -16,63 +16,73 @@ Main page of the website.
 
 {% block body %}
 <header>
-<h1>NMC</h1>
+	<h1>NMC</h1>
 </header>
 <div class="controls">
-<div class="col0">
-<div style="width:99%;float:left;position:relative">
-<input type="button" style="width:50%" onclick="toggleMap()" value="Toggle map">
+	<div class="col0">
+		<div style="width:99%;float:left;position:relative">
+			<input type="button" style="width:50%" onclick="toggleMap()" value="Toggle map">
+		</div>
+		<div style="width:49%;float:left;position:relative">
+			<label>Offset:</label> 
+		</div>
+		<div style="width:49%;float:left;position:relative">
+			<input id="link_offset" type="text" value="0.0001" onkeypress="offsetLinks(event)">
+		</div>
+		<div style="width:49%;float:left;position:relative">
+			<label>Color links by:</label>
+		</div>
+		<div style="width:49%;float:left;position:relative">
+			<select id='link_color' onchange="redraw()"></select>
+		</div>
+		<div style="width:49%;float:left;position:relative">
+			<label>Color nodes by:</label>
+		</div>
+		<div style="width:49%;float:left;position:relative">
+			<select id='node_color' onchange="redraw()"></select>
+		</div>
+	</div>
+	
+	<div id="dataPanel" class="col1">
+		<div style="position:relative;top:5%;width:100%;">
+			<div style="width:80px;float:left;position:relative;left:8%">Start:</div>
+			<input type="text" id="data_start" value="" onkeyup="check_load_data()" style="width:80px;right:20px;position:absolute;"><br>
+			<div style="width:80px;float:left;position:relative;left:8%">Interval:</div>
+			<input type="text" id="data_interval" value="" onkeyup="check_load_data()" style="width:80px;right:20px;position:absolute;"><br>
+			<div style="width:80px;float:left;position:relative;left:8%">End:</div>
+			<input type="text" id="data_end" value="" onkeyup="check_load_data()" style="width:80px;right:20px;position:absolute;"><br>
+			<input type="button" id="load_data" value="Load Data" disabled="true" onclick='load_data()'>
+		</div>
+	</div>
+	
+	<div id="selectionPanel" class="col2">Select by:
+		<input type="radio" id="selection_type_nodelink" name="selection_type" value="types" onclick="selection_type()" checked="true">Node/Link Types
+		<input type="radio" id="selection_type_busroute" name="selection_type" value="busroutes" onclick="selection_type()">Bus Routes<br>
+			<div style="height:100%;width:100%;top:5%;position:relative">
+				<div id="nodeLinkTypeSelect" style="visibility:visible;position:absolute;left:0px;top:0px;width:100%">
+					<div style="float:left;">Node types:<br>
+						{% for nt in nodetypes %}<input type="checkbox" name="nodetypes" value={{ nt }} checked="yes" onclick="redraw()">{{ nt }}<br>{% endfor %}
+					</div>
+					<div style="float:left;left:5%;position:relative;">Link types:<br>
+						{% for lt in linktypes %}<input type="checkbox" name="linktypes" value={{ lt }} checked="yes" onclick="redraw()">{{ lt }}<br>{% endfor %}
+					</div>
+				</div>
+				<div id="busRouteSelect" style="visibility:hidden;position:absolute;left:0px;top:0px">Bus Routes:<br> 
+					<div id="busroutes" style="position:relative;float:left">
+						{% for br in busroutes %}<div style="width:45px;height:20px;float:left;position:relative"><input type="checkbox" name="busroutes" value="{{ br }}" checked="yes" onclick=redraw() >{{ br }}
+							
+					</div>{% endfor %}      
+				</div>
+			</div>
+		</div>
+	</div> 
 </div>
-<div style="width:49%;float:left;position:relative">
-<label>Offset:</label> 
-</div>
-<div style="width:49%;float:left;position:relative">
-<input id="link_offset" type="text" value="0.0001" onkeypress="offsetLinks(event)">
-</div>
-<div style="width:49%;float:left;position:relative">
-<label>Color links by:</label>
-</div>
-<div style="width:49%;float:left;position:relative">
-<select id='link_color' onchange="redraw()"></select>
-</div>
-<div style="width:49%;float:left;position:relative">
-<label>Color nodes by:</label>
-</div>
-<div style="width:49%;float:left;position:relative">
-<select id='node_color' onchange="redraw()"></select>
-</div>
-</div>
-<div id="dataPanel" class="col1">
-<div style="position:relative;top:5%;width:100%;">
-<div style="width:80px;float:left;position:relative;left:8%">Start:</div><input type="text" id="data_start" value="" onkeyup="check_load_data()" style="width:80px;right:20px;position:absolute;"><br>
-<div style="width:80px;float:left;position:relative;left:8%">Interval:</div><input type="text" id="data_interval" value="" onkeyup="check_load_data()" style="width:80px;right:20px;position:absolute;"><br>
-<div style="width:80px;float:left;position:relative;left:8%">End:</div><input type="text" id="data_end" value="" onkeyup="check_load_data()" style="width:80px;right:20px;position:absolute;"><br>
-<input type="button" id="load_data" value="Load Data" disabled="true" onclick='load_data()'>
-</div>
-</div>
-<div id="selectionPanel" class="col2">Select by:
-<input type="radio" id="selection_type_nodelink" name="selection_type" value="types" onclick="selection_type()" checked="true">Node/Link Types
-<input type="radio" id="selection_type_busroute" name="selection_type" value="busroutes" onclick="selection_type()">Bus Routes<br>
-<div style="height:100%;width:100%;top:5%;position:relative">
-<div id="nodeLinkTypeSelect" style="visibility:visible;position:absolute;left:0px;top:0px;width:100%">
-<div style="float:left;">Node types:<br>
-{% for nt in nodetypes %}<input type="checkbox" name="nodetypes" value={{ nt }} checked="yes" onclick="redraw()">{{ nt }}<br>{% endfor %}
-</div>
-<div style="float:left;left:5%;position:relative;">Link types:<br>
-{% for lt in linktypes %}<input type="checkbox" name="linktypes" value={{ lt }} checked="yes" onclick="redraw()">{{ lt }}<br>{% endfor %}
-</div>
-</div>
-<div id="busRouteSelect" style="visibility:hidden;position:absolute;left:0px;top:0px">Bus Routes:<br> 
-<div id="busroutes" style="position:relative;float:left">
-{% for br in busroutes %}<div style="width:45px;height:20px;float:left;position:relative"><input type="checkbox" name="busroutes" value="{{ br }}" checked="yes" onclick=redraw() >{{ br }}</div>{% endfor %}      
-</div>
-</div>
-</div>
-</div> 
-</div>
+	
 <div class="mapcntr">
-<div id="map" class="smallmap"></div>
+	<div id="map" class="smallmap"></div>
 </div>
+	
+	
 <script type="text/javascript">
 
 var network_name = "{{ name }}";
@@ -112,7 +122,7 @@ var nodes = [
 	},
 	{% endfor %}
 	];
-	
+
 var busroutes = {
 	{% for k,v in busroutes.items %}
 		"{{ k }}" : [ {{ v }} ],

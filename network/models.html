@@ -1,0 +1,234 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module models</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>models</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/Carlos/nmc/network/models.py">/Users/Carlos/nmc/network/models.py</a></font></td></tr></table>
+    <p><tt>#for&nbsp;pydoc</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="django.db.models.html">django.db.models</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+</td><td width="25%" valign=top><a href="psycopg2.html">psycopg2</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="django.db.models.manager.html#Manager">django.db.models.manager.Manager</a>(<a href="__builtin__.html#object">__builtin__.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="models.html#NetworkManager">NetworkManager</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="models.html#Link">Link</a>
+</font></dt><dt><font face="helvetica, arial"><a href="models.html#Network">Network</a>
+</font></dt><dt><font face="helvetica, arial"><a href="models.html#Node">Node</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Link">class <strong>Link</strong></a></font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Link-__init__"><strong>__init__</strong></a>(self, lid, ltype, src, dst, path, attrs)</dt><dd><tt>lid&nbsp;&nbsp;:&nbsp;unique&nbsp;link&nbsp;identifier<br>
+ltype:&nbsp;specifies&nbsp;link&nbsp;or&nbsp;centroid&nbsp;connector<br>
+src&nbsp;&nbsp;:<br>
+dst&nbsp;&nbsp;:<br>
+path&nbsp;:<br>
+attrs:</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Network">class <strong>Network</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>name,&nbsp;host,&nbsp;user,&nbsp;password,&nbsp;database<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Network-__unicode__"><strong>__unicode__</strong></a>(self)</dt><dd><tt>network&nbsp;unicode&nbsp;respresentation,&nbsp;returns&nbsp;network&nbsp;name</tt></dd></dl>
+
+<dl><dt><a name="Network-load"><strong>load</strong></a>(self)</dt><dd><tt>cursor&nbsp;is&nbsp;the&nbsp;cursor()&nbsp;do&nbsp;the&nbsp;nmc&nbsp;database<br>
+nodes&nbsp;is&nbsp;a&nbsp;list&nbsp;containing&nbsp;instances&nbsp;of&nbsp;class&nbsp;Nodes<br>
+nodemap&nbsp;is&nbsp;a&nbsp;dictionary<br>
+&nbsp;&nbsp;key:&nbsp;node&nbsp;id<br>
+&nbsp;&nbsp;value:&nbsp;index&nbsp;of&nbsp;node&nbsp;associated&nbsp;with&nbsp;id&nbsp;within&nbsp;nodes</tt></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>busroutes</strong> = ''</dl>
+
+<dl><dt><strong>database</strong> = &lt;django.db.models.fields.CharField&gt;</dl>
+
+<dl><dt><strong>host</strong> = &lt;django.db.models.fields.CharField&gt;</dl>
+
+<dl><dt><strong>linkmap</strong> = {}</dl>
+
+<dl><dt><strong>links</strong> = []</dl>
+
+<dl><dt><strong>linktypes</strong> = ''</dl>
+
+<dl><dt><strong>loaded</strong> = False</dl>
+
+<dl><dt><strong>name</strong> = &lt;django.db.models.fields.CharField&gt;</dl>
+
+<dl><dt><strong>nodemap</strong> = {}</dl>
+
+<dl><dt><strong>nodes</strong> = []</dl>
+
+<dl><dt><strong>nodetypes</strong> = ''</dl>
+
+<dl><dt><strong>objects</strong> = &lt;models.NetworkManager object&gt;</dl>
+
+<dl><dt><strong>password</strong> = &lt;django.db.models.fields.CharField&gt;</dl>
+
+<dl><dt><strong>user</strong> = &lt;django.db.models.fields.CharField&gt;</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="NetworkManager">class <strong>NetworkManager</strong></a>(<a href="django.db.models.manager.html#Manager">django.db.models.manager.Manager</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="models.html#NetworkManager">NetworkManager</a></dd>
+<dd><a href="django.db.models.manager.html#Manager">django.db.models.manager.Manager</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="NetworkManager-create_network"><strong>create_network</strong></a>(self, name, host, user, password, database)</dt></dl>
+
+<hr>
+Methods inherited from <a href="django.db.models.manager.html#Manager">django.db.models.manager.Manager</a>:<br>
+<dl><dt><a name="NetworkManager-__init__"><strong>__init__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="NetworkManager-aggregate"><strong>aggregate</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-all"><strong>all</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="NetworkManager-annotate"><strong>annotate</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-bulk_create"><strong>bulk_create</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-complex_filter"><strong>complex_filter</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-contribute_to_class"><strong>contribute_to_class</strong></a>(self, model, name)</dt></dl>
+
+<dl><dt><a name="NetworkManager-count"><strong>count</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="NetworkManager-create"><strong>create</strong></a>(self, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-dates"><strong>dates</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-db_manager"><strong>db_manager</strong></a>(self, using)</dt></dl>
+
+<dl><dt><a name="NetworkManager-defer"><strong>defer</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-distinct"><strong>distinct</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-exclude"><strong>exclude</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-exists"><strong>exists</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-extra"><strong>extra</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-filter"><strong>filter</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-get"><strong>get</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-get_empty_query_set"><strong>get_empty_query_set</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="NetworkManager-get_or_create"><strong>get_or_create</strong></a>(self, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-get_query_set"><strong>get_query_set</strong></a>(self)</dt><dd><tt>Returns&nbsp;a&nbsp;new&nbsp;QuerySet&nbsp;object.&nbsp;&nbsp;Subclasses&nbsp;can&nbsp;override&nbsp;this&nbsp;method<br>
+to&nbsp;easily&nbsp;customize&nbsp;the&nbsp;behavior&nbsp;of&nbsp;the&nbsp;<a href="django.db.models.manager.html#Manager">Manager</a>.</tt></dd></dl>
+
+<dl><dt><a name="NetworkManager-in_bulk"><strong>in_bulk</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-iterator"><strong>iterator</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-latest"><strong>latest</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-none"><strong>none</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="NetworkManager-only"><strong>only</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-order_by"><strong>order_by</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-prefetch_related"><strong>prefetch_related</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-raw"><strong>raw</strong></a>(self, raw_query, params<font color="#909090">=None</font>, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-reverse"><strong>reverse</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-select_for_update"><strong>select_for_update</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-select_related"><strong>select_related</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-update"><strong>update</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-using"><strong>using</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-values"><strong>values</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="NetworkManager-values_list"><strong>values_list</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="django.db.models.manager.html#Manager">django.db.models.manager.Manager</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>db</strong></dt>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="django.db.models.manager.html#Manager">django.db.models.manager.Manager</a>:<br>
+<dl><dt><strong>creation_counter</strong> = 1</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Node">class <strong>Node</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>class&nbsp;pydoc&nbsp;test<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Node-__init__"><strong>__init__</strong></a>(self, nid, ntype, point, attrs)</dt><dd><tt>nid&nbsp;&nbsp;:&nbsp;unique&nbsp;node&nbsp;identifier<br>
+ntype:&nbsp;specifies&nbsp;node&nbsp;or&nbsp;centroid<br>
+point:<br>
+attrs:</tt></dd></dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>Links</strong> = []<br>
+<strong>Nodes</strong> = {}</td></tr></table>
+</body></html>

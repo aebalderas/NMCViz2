@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% comment %}
+
+Main page of the website.
+
+{% endcomment %}
+
+{% block head %}
+<link href="{{ STATIC_URL }}css/vis.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/jquery.cookies.2.2.0.min.js"></script>
+<script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/OpenLayers.js"></script>
+<script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/paths.js"></script>
+<script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/vis.js"></script>
+<title>NMC</title>
+{% endblock %}
+
+{% block body %}
+
+  <div id="top_container" align="center">
+  
+	<div id="network_panel">
+	 <p>Network</p>
+	 <button onclick="toggleMap()" value="Toggle map">Toggle Map</button>
+      <table>
+        <tr><td>Start</td>   <td><input type="text" id="data_start"    value="" onkeyup="check_load_data()"></td></tr>
+        <tr><td>Interval</td><td><input type="text" id="data_interval" value="" onkeyup="check_load_data()"></td></tr>
+        <tr><td>End</td>     <td><input type="text" id="data_end"      value="" onkeyup="check_load_data()"></td></tr>
+      </table>
+       <input type="button" id="load_data" value="Load Data" disabled="true" onclick="load_data()">
+	</div>
+	
+	<div id="link_panel">
+	  <p>Links</p>
+       <table>
+         <tr>
+           <td>Offset</td>
+           <td><input id="link_offset" type="text" value="0.0001" onkeypress="offsetLinks(event)"></td>
+         </tr>
+         <tr>
+           <td>Color By</td>
+           <td><select id='link_color' onchange="link_color_selection()"></select></td>
+         </tr>
+       </table>
+       <p>Show Types:</p>
+       {% for lt in linktypes %}<input type="checkbox" name="linktypes" value={{ lt }} checked="yes" onclick="redraw()">{{ lt }}<br>{% endfor %}
+	</div>
+	
+	<div id="nodes_panel">
+	  <p>Nodes</p>
+      <table>
+         <tr>
+            <td>Color By</td>
+            <td><select id='node_color' onchange="redraw()"></select></td>
+          </tr>
+      </table>
+      <p>Show Types:</p>
+      {% for nt in nodetypes %}<input type="checkbox" name="nodetypes" value={{ nt }} checked="yes" onclick="redraw()">{{ nt }}<br>{% endfor %}
+	</div>
+  </div>
+
+
+
+<div class="mapcntr">
+<div id="map" class="smallmap"></div>
+</div>
+<script type="text/javascript">
+
+var network_name = "{{ name }}";
+
+var links = [
+	{% for l in links %}
+	{
+		linkid: {{ l.lid }},
+		type: {{ l.ltype }},
+		source_id: {{ l.src }},
+		destination_id: {{ l.dst }},
+		path: [
+		{% for x,y in l.path %}
+			[{{ x }}, {{ y }}],
+		{% endfor %} 
+		], 
+		attrs: {
+		{% for k,v in l.attributes.items %}
+			"{{ k }}": {{ v }},
+		{% endfor %}
+		},
+	},
+	{% endfor %}
+];
+
+var nodes = [
+	{% for n in nodes %}
+	{
+		nodeid: {{ n.nid }},
+		type: {{ n.ntype }},
+		point: {{ n.point }},
+		attrs: {
+		{% for k,v in n.attributes.items %}
+			"{{ k }}": {{ v }},
+		{% endfor %}
+		},
+	},
+	{% endfor %}
+	];
+	
+var busroutes = {
+	{% for k,v in busroutes.items %}
+		"{{ k }}" : [ {{ v }} ],
+	{% endfor %}
+};
+</script>
+{% endblock %}

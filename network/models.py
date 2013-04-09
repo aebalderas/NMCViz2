@@ -1,11 +1,28 @@
+#for pydoc
+import sys
+sys.path.append('/Users/Carlos')
+sys.path.append('/Users/Carlos/nmc/')
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "nmc.settings")
+
 from django.db import models
 import sys, psycopg2
 
-Nodes = {}
-Links = []
+#what are these for? necessary?
+#Nodes = {}
+#Links = []
 
 class Node():
+    """
+    class pydoc test
+    """
     def __init__(self, nid, ntype, point, attrs):
+        """
+        nid  : unique node identifier
+        ntype: specifies node or centroid
+        point:
+        attrs:
+        """
         self.nid        = nid
         self.ntype      = ntype
         self.point      = point
@@ -13,19 +30,33 @@ class Node():
         
 class Link():
     def __init__(self, lid, ltype, src, dst, path, attrs):
+        """
+        lid  : unique link identifier
+        ltype: specifies link or centroid connector
+        src  :
+        dst  :
+        path :
+        attrs:
+        """
         self.lid        = lid
         self.src        = src
         self.dst        = dst
         self.ltype      = ltype
         self.path       = eval(path)
         self.attributes = attrs
-        
+      
 class NetworkManager(models.Manager):
     def create_network(self, name, host, user, password, database):
+        """
+        
+        """
         n = self.create(name=name, host=host, user=user, password=password, database=database)
         return n
-
-class Network(models.Model):
+class Network(models.Model): #original
+#class Network(): #pydoc
+    """
+    name, host, user, password, database
+    """
     name = models.CharField(max_length = 64)
     host = models.CharField(max_length = 64)
     user = models.CharField(max_length = 64)
@@ -44,9 +75,37 @@ class Network(models.Model):
     busroutes = ""
         
     def __unicode__(self):
+        """
+        network unicode respresentation, returns network name
+        """
         return self.name
     
     def load(self):
+        """
+        cursor is the cursor() do the nmc database
+        
+        loads nodes: 
+          nodes is a list containing instances of class Nodes
+          nodemap is a dictionary
+            key : node id
+            value : index of node id within nodes 
+          types is a list containing type numbers of nodes; node or centroid
+          nodetypes is a string, comma delimited listing of types
+          
+        loads links:
+          links is a list containing instances of class Link
+          linkmap is a dictonary
+            key: link id
+            value: index of link id within links
+          attrs is a dictionary containing link attributes
+          types is replaced wiht a list containing type numbers of links: link or centroid connector
+          linktypes is a string, comma delimited listing of types
+          
+        load busroutes:
+          busroutes is a dictionary
+            key: route id
+            value: list of all links in the bus route
+        """
         if self.loaded == False:
             self.loaded = True
             
@@ -58,7 +117,7 @@ class Network(models.Model):
         for node in cursor:
             self.nodemap[node[0]] = len(self.nodes)
             self.nodes.append(Node(node[0], node[1], [node[2], node[3]], {}))
-
+            
         cursor.execute('select distinct(type) from nodes;')
         types = []
         for t in cursor:

@@ -1,3 +1,11 @@
+#for pydoc
+import sys
+sys.path.append('/Users/Carlos')
+sys.path.append('/Users/Carlos/nmc/')
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "nmc.settings")
+
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
@@ -9,6 +17,9 @@ import psycopg2
 from network.models import Network
 
 class NewNetworkForm(forms.Form):
+    """
+    test test!!
+    """
     name = forms.CharField(max_length = 64)
     host = forms.CharField(max_length = 64)
     user = forms.CharField(max_length = 64)
@@ -79,7 +90,8 @@ def visualize(request, name):
     args['links'] = network.links
     args['linktypes'] = network.linktypes.split(',')
     args['busroutes'] = network.busroutes
-    return render(request, 'visualize.html', args)
+    #return render(request, 'visualize.html', args)
+    return render(request, 'UIupdate.html', args)
 
 def network_error(request, errormsg):    
     return render(request, 'database_open_error.html', {"errormsg": errormsg})

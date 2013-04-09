@@ -1,0 +1,155 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module views</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>views</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/Carlos/nmc/network/views.py">/Users/Carlos/nmc/network/views.py</a></font></td></tr></table>
+    <p><tt>#for&nbsp;pydoc</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="django.forms.html">django.forms</a><br>
+<a href="django.db.models.html">django.db.models</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+<a href="psycopg2.html">psycopg2</a><br>
+</td><td width="25%" valign=top><a href="django.utils.simplejson.html">django.utils.simplejson</a><br>
+<a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="django.forms.forms.html#Form">django.forms.forms.Form</a>(<a href="django.forms.forms.html#BaseForm">django.forms.forms.BaseForm</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="views.html#NewNetworkForm">NewNetworkForm</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="NewNetworkForm">class <strong>NewNetworkForm</strong></a>(<a href="django.forms.forms.html#Form">django.forms.forms.Form</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>test&nbsp;test!!<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="views.html#NewNetworkForm">NewNetworkForm</a></dd>
+<dd><a href="django.forms.forms.html#Form">django.forms.forms.Form</a></dd>
+<dd><a href="django.forms.forms.html#BaseForm">django.forms.forms.BaseForm</a></dd>
+<dd><a href="django.utils.encoding.html#StrAndUnicode">django.utils.encoding.StrAndUnicode</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>media</strong></dt>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>base_fields</strong> = {'name': &lt;django.forms.fields.CharField object a...go.forms.fields.CharField object at 0x101a65390&gt;}</dl>
+
+<hr>
+Data and other attributes inherited from <a href="django.forms.forms.html#Form">django.forms.forms.Form</a>:<br>
+<dl><dt><strong>__metaclass__</strong> = &lt;class 'django.forms.forms.DeclarativeFieldsMetaclass'&gt;<dd><tt>Metaclass&nbsp;that&nbsp;converts&nbsp;Field&nbsp;attributes&nbsp;to&nbsp;a&nbsp;dictionary&nbsp;called<br>
+'base_fields',&nbsp;taking&nbsp;into&nbsp;account&nbsp;parent&nbsp;class&nbsp;'base_fields'&nbsp;as&nbsp;well.</tt></dl>
+
+<hr>
+Methods inherited from <a href="django.forms.forms.html#BaseForm">django.forms.forms.BaseForm</a>:<br>
+<dl><dt><a name="NewNetworkForm-__getitem__"><strong>__getitem__</strong></a>(self, name)</dt><dd><tt>Returns&nbsp;a&nbsp;BoundField&nbsp;with&nbsp;the&nbsp;given&nbsp;name.</tt></dd></dl>
+
+<dl><dt><a name="NewNetworkForm-__init__"><strong>__init__</strong></a>(self, data<font color="#909090">=None</font>, files<font color="#909090">=None</font>, auto_id<font color="#909090">='id_%s'</font>, prefix<font color="#909090">=None</font>, initial<font color="#909090">=None</font>, error_class<font color="#909090">=&lt;class 'django.forms.util.ErrorList'&gt;</font>, label_suffix<font color="#909090">=':'</font>, empty_permitted<font color="#909090">=False</font>)</dt><dd><tt>#&nbsp;This&nbsp;is&nbsp;the&nbsp;main&nbsp;implementation&nbsp;of&nbsp;all&nbsp;the&nbsp;<a href="django.forms.forms.html#Form">Form</a>&nbsp;logic.&nbsp;Note&nbsp;that&nbsp;this<br>
+#&nbsp;class&nbsp;is&nbsp;different&nbsp;than&nbsp;<a href="django.forms.forms.html#Form">Form</a>.&nbsp;See&nbsp;the&nbsp;comments&nbsp;by&nbsp;the&nbsp;<a href="django.forms.forms.html#Form">Form</a>&nbsp;class&nbsp;for&nbsp;more<br>
+#&nbsp;information.&nbsp;Any&nbsp;improvements&nbsp;to&nbsp;the&nbsp;form&nbsp;API&nbsp;should&nbsp;be&nbsp;made&nbsp;to&nbsp;*this*<br>
+#&nbsp;class,&nbsp;not&nbsp;to&nbsp;the&nbsp;<a href="django.forms.forms.html#Form">Form</a>&nbsp;class.</tt></dd></dl>
+
+<dl><dt><a name="NewNetworkForm-__iter__"><strong>__iter__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="NewNetworkForm-__unicode__"><strong>__unicode__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="NewNetworkForm-add_initial_prefix"><strong>add_initial_prefix</strong></a>(self, field_name)</dt><dd><tt>Add&nbsp;a&nbsp;'initial'&nbsp;prefix&nbsp;for&nbsp;checking&nbsp;dynamic&nbsp;initial&nbsp;values</tt></dd></dl>
+
+<dl><dt><a name="NewNetworkForm-add_prefix"><strong>add_prefix</strong></a>(self, field_name)</dt><dd><tt>Returns&nbsp;the&nbsp;field&nbsp;name&nbsp;with&nbsp;a&nbsp;prefix&nbsp;appended,&nbsp;if&nbsp;this&nbsp;<a href="django.forms.forms.html#Form">Form</a>&nbsp;has&nbsp;a<br>
+prefix&nbsp;set.<br>
+&nbsp;<br>
+Subclasses&nbsp;may&nbsp;wish&nbsp;to&nbsp;override.</tt></dd></dl>
+
+<dl><dt><a name="NewNetworkForm-as_p"><strong>as_p</strong></a>(self)</dt><dd><tt>Returns&nbsp;this&nbsp;form&nbsp;rendered&nbsp;as&nbsp;HTML&nbsp;&lt;p&gt;s.</tt></dd></dl>
+
+<dl><dt><a name="NewNetworkForm-as_table"><strong>as_table</strong></a>(self)</dt><dd><tt>Returns&nbsp;this&nbsp;form&nbsp;rendered&nbsp;as&nbsp;HTML&nbsp;&lt;tr&gt;s&nbsp;--&nbsp;excluding&nbsp;the&nbsp;&lt;table&gt;&lt;/table&gt;.</tt></dd></dl>
+
+<dl><dt><a name="NewNetworkForm-as_ul"><strong>as_ul</strong></a>(self)</dt><dd><tt>Returns&nbsp;this&nbsp;form&nbsp;rendered&nbsp;as&nbsp;HTML&nbsp;&lt;li&gt;s&nbsp;--&nbsp;excluding&nbsp;the&nbsp;&lt;ul&gt;&lt;/ul&gt;.</tt></dd></dl>
+
+<dl><dt><a name="NewNetworkForm-clean"><strong>clean</strong></a>(self)</dt><dd><tt>Hook&nbsp;for&nbsp;doing&nbsp;any&nbsp;extra&nbsp;form-wide&nbsp;cleaning&nbsp;after&nbsp;Field.<a href="#NewNetworkForm-clean">clean</a>()&nbsp;been<br>
+called&nbsp;on&nbsp;every&nbsp;field.&nbsp;Any&nbsp;ValidationError&nbsp;raised&nbsp;by&nbsp;this&nbsp;method&nbsp;will<br>
+not&nbsp;be&nbsp;associated&nbsp;with&nbsp;a&nbsp;particular&nbsp;field;&nbsp;it&nbsp;will&nbsp;have&nbsp;a&nbsp;special-case<br>
+association&nbsp;with&nbsp;the&nbsp;field&nbsp;named&nbsp;'__all__'.</tt></dd></dl>
+
+<dl><dt><a name="NewNetworkForm-full_clean"><strong>full_clean</strong></a>(self)</dt><dd><tt>Cleans&nbsp;all&nbsp;of&nbsp;self.<strong>data</strong>&nbsp;and&nbsp;populates&nbsp;self.<strong>_errors</strong>&nbsp;and<br>
+self.<strong>cleaned_data</strong>.</tt></dd></dl>
+
+<dl><dt><a name="NewNetworkForm-has_changed"><strong>has_changed</strong></a>(self)</dt><dd><tt>Returns&nbsp;True&nbsp;if&nbsp;data&nbsp;differs&nbsp;from&nbsp;initial.</tt></dd></dl>
+
+<dl><dt><a name="NewNetworkForm-hidden_fields"><strong>hidden_fields</strong></a>(self)</dt><dd><tt>Returns&nbsp;a&nbsp;list&nbsp;of&nbsp;all&nbsp;the&nbsp;BoundField&nbsp;objects&nbsp;that&nbsp;are&nbsp;hidden&nbsp;fields.<br>
+Useful&nbsp;for&nbsp;manual&nbsp;form&nbsp;layout&nbsp;in&nbsp;templates.</tt></dd></dl>
+
+<dl><dt><a name="NewNetworkForm-is_multipart"><strong>is_multipart</strong></a>(self)</dt><dd><tt>Returns&nbsp;True&nbsp;if&nbsp;the&nbsp;form&nbsp;needs&nbsp;to&nbsp;be&nbsp;multipart-encoded,&nbsp;i.e.&nbsp;it&nbsp;has<br>
+FileInput.&nbsp;Otherwise,&nbsp;False.</tt></dd></dl>
+
+<dl><dt><a name="NewNetworkForm-is_valid"><strong>is_valid</strong></a>(self)</dt><dd><tt>Returns&nbsp;True&nbsp;if&nbsp;the&nbsp;form&nbsp;has&nbsp;no&nbsp;errors.&nbsp;Otherwise,&nbsp;False.&nbsp;If&nbsp;errors&nbsp;are<br>
+being&nbsp;ignored,&nbsp;returns&nbsp;False.</tt></dd></dl>
+
+<dl><dt><a name="NewNetworkForm-non_field_errors"><strong>non_field_errors</strong></a>(self)</dt><dd><tt>Returns&nbsp;an&nbsp;ErrorList&nbsp;of&nbsp;errors&nbsp;that&nbsp;aren't&nbsp;associated&nbsp;with&nbsp;a&nbsp;particular<br>
+field&nbsp;--&nbsp;i.e.,&nbsp;from&nbsp;<a href="django.forms.forms.html#Form">Form</a>.<a href="#NewNetworkForm-clean">clean</a>().&nbsp;Returns&nbsp;an&nbsp;empty&nbsp;ErrorList&nbsp;if&nbsp;there<br>
+are&nbsp;none.</tt></dd></dl>
+
+<dl><dt><a name="NewNetworkForm-visible_fields"><strong>visible_fields</strong></a>(self)</dt><dd><tt>Returns&nbsp;a&nbsp;list&nbsp;of&nbsp;BoundField&nbsp;objects&nbsp;that&nbsp;aren't&nbsp;hidden&nbsp;fields.<br>
+The&nbsp;opposite&nbsp;of&nbsp;the&nbsp;<a href="#NewNetworkForm-hidden_fields">hidden_fields</a>()&nbsp;method.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="django.forms.forms.html#BaseForm">django.forms.forms.BaseForm</a>:<br>
+<dl><dt><strong>changed_data</strong></dt>
+</dl>
+<dl><dt><strong>errors</strong></dt>
+<dd><tt>Returns&nbsp;an&nbsp;ErrorDict&nbsp;for&nbsp;the&nbsp;data&nbsp;provided&nbsp;for&nbsp;the&nbsp;form</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="django.utils.encoding.html#StrAndUnicode">django.utils.encoding.StrAndUnicode</a>:<br>
+<dl><dt><a name="NewNetworkForm-__str__"><strong>__str__</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="django.utils.encoding.html#StrAndUnicode">django.utils.encoding.StrAndUnicode</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-load_data"><strong>load_data</strong></a>(request, network_name, start, interval, terminate)</dt></dl>
+ <dl><dt><a name="-network"><strong>network</strong></a>(request)</dt></dl>
+ <dl><dt><a name="-network_error"><strong>network_error</strong></a>(request, errormsg)</dt></dl>
+ <dl><dt><a name="-network_ok"><strong>network_ok</strong></a>(request)</dt></dl>
+ <dl><dt><a name="-new_network"><strong>new_network</strong></a>(request)</dt></dl>
+ <dl><dt><a name="-visualize"><strong>visualize</strong></a>(request, name)</dt></dl>
+</td></tr></table>
+</body></html>
