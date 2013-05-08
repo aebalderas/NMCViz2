@@ -1,97 +1,197 @@
-#for pydoc
-import sys
-sys.path.append('/Users/Carlos')
-sys.path.append('/Users/Carlos/nmc/')
-import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "nmc.settings")
-
-
+import  numpy, pickle
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.db import models
 from django import forms
 from django.utils import simplejson 
-import psycopg2
+import psycopg2, sqlite3
+from TDD import *
+import os
 
 from network.models import Network
 
 class NewNetworkForm(forms.Form):
-    """
-    test test!!
-    """
-    name = forms.CharField(max_length = 64)
+    database = forms.CharField(max_length = 64)
     host = forms.CharField(max_length = 64)
     user = forms.CharField(max_length = 64)
     password = forms.CharField(max_length = 64)
-    database = forms.CharField(max_length = 64)
+
 
 def network(request):
     dbs = []
     for d in Network.objects.all():
-        dbs.append(d.name)
+        dbs.append(d.database)
     return render(request, 'network.html', {"databases": dbs})
 
-def load_data(request, network_name, start, interval, terminate):
+def load_origins(request, network, dataset):
+    user, network = tuple(network.split('_', 1))
+    try:
+        db = sqlite3.connect('/var/opt/vtg/vista/%s/%s/%s' % (user, network, dataset))
+        c = db.cursor()
+        c.execute('select distinct(orig) from paths')
+    except:
+        return HttpResponse(simplejson.dumps({'status': 'No such dataset as %s in %s' % (dataset, network)}), mimetype='application/json')
     
-    network = Network.objects.get(name=network_name)
-    
-    dbc = psycopg2.connect(host=network.host, user=network.user, password=network.password, database=network.database)
-    cursor = dbc.cursor()
-    
-    sql = 'select linkid, from_sec, to_sec, flow_15min as volume, v_over_c from compute_v_over_c(%s,%s,%s) a,links b,bus_route c,bus_route_link d  where b.id=a.linkid and d.link=b.id and c.id=d.route order by from_sec;' % (start, interval, terminate)
-    cursor.execute(sql)
-    
-    time_data = []
-    last_time = None
-    last_timestep = None
-   
-    for row in cursor:
-        
-        if row[1] != last_time:
-            
-            if last_timestep != None:
-                time_data.append(last_timestep)
-                
-            last_time = row[1]
-                
-            last_timestep = {'linkids': [], 'start': row[1], 'end': row[2], 'volume': [], 'v_over_c': []}
-        
-        last_timestep['linkids'].append(row[0])
-        last_timestep['volume'].append(row[3])
-        last_timestep['v_over_c'].append(float(row[4]))
-        
-    if last_timestep != None:
-        time_data.append(last_timestep)
-        
-    result = {'attributes': ['volume', 'v_over_c'], 'data': time_data}
-    
-    return HttpResponse(simplejson.dumps(result), mimetype='application/json')
+    r = {'status': 'OK', 'name': dataset, 'origins': [i[0] for i in c]}
+    rjson = simplejson.dumps(r)
+    return HttpResponse(rjson, mimetype='application/json')
 
-def visualize(request, name):
+def load_destinations(request, network, dataset, origin):
+    user, network = tuple(network.split('_', 1))
+    try:
+        dbname = '/var/opt/vtg/vista/%s/%s/%s' % (user, network, dataset)
+        db = sqlite3.connect(dbname)
+        c = db.cursor()
+        sql = 'select distinct(dest) from paths where orig in (%s)' % origin
+        c.execute(sql)
+    except:
+        return HttpResponse(simplejson.dumps({'status': 'No such dataset as %s in %s' % (dataset, network)}), mimetype='application/json')
+    
+    r = {'status': 'OK', 'name': dataset, 'destinations': [i[0] for i in c]}
+    rjson = simplejson.dumps(r)
+    return HttpResponse(rjson, mimetype='application/json')
+
+    
+def load_paths(request, network, dataset, interval, origin, destination):
+    user, network = tuple(network.split('_', 1))
+    try:
+        db = sqlite3.connect('/var/opt/vtg/vista/%s/%s/%s' % (user, network, dataset))
+        c = db.cursor()
+        sql = 'select cast((time / %s) as int) as tstep, count(*), max(elapsed), path from paths where orig in (%s) and dest in (%s) group by tstep, orig, dest, path order by tstep' % (interval, origin, destination)
+        c.execute(sql)
+    except:
+        return HttpResponse(simplejson.dumps({'status': 'No such dataset as %s in %s' %  (dataset, network)}), mimetype='application/json')
+
+    timesteps = []
+    current_timestep_links = {}
+    current_timestep_tstep = -1
+    for i in c:
+        if i[0] != current_timestep_tstep:
+            if current_timestep_tstep >= 0:
+                timesteps.append(current_timestep_links)
+            current_timestep_links = {}
+            current_timestep_tstep = i[0]
+        for link in i[3].split(','):
+            if current_timestep_links.has_key(link) == False:
+                current_timestep_links[link] = [0, 0]
+            current_timestep_links[link][0] += i[1]
+            current_timestep_links[link][1] = max(current_timestep_links[link][1], i[2])  
+            
+    timesteps.append(current_timestep_links)
+    
+    max_count = 0
+    max_time = 0
+    for t, tstep in enumerate(timesteps):
+        linkids = []
+        counts = []
+        times = []
+        for linkid in tstep:
+            count, time = tstep[linkid]
+            if count > max_count: max_count = count
+            if time > max_time: max_time = time
+            linkids.append(linkid)
+            counts.append(count)
+            times.append(time)
+        timesteps[t] = {'linkids': linkids, 'counts': counts, 'times': times}
+        
+    result = {'timesteps': timesteps, 'attributes': {'counts' : [0, max_count], 'times': [0, max_time]}}
+
+    r = {'status': 'OK', 'name': dataset, 'data': result}
+    rjson = simplejson.dumps(r)
+    return HttpResponse(rjson, mimetype='application/json')
+
+    
+def load_path_data(request, network, dataset):
+    user, network = tuple(network.split('_', 1))
+    if os.path.exists('/var/opt/vtg/vista/%s/%s/%s' % (user, network, dataset)):
+        return HttpResponse(simplejson.dumps({'status': 'OK', 'dataset': dataset}), mimetype='application/json')
+    else:
+        return HttpResponse(simplejson.dumps({'status': 'No such dataset as %s in %s' %  (dataset, network)}), mimetype='application/json')
+ 
+def load_link_data(request, database, dataset):
+    
+    network = Network.objects.get(database=database)
+    
+    variable_name = dataset.rsplit('.', 1)[0]
+    directory_name = '/var/opt/vtg/vista/%s/%s' % tuple(network.database.split('_', 1))                                                    
+    fullname = directory_name + '/' + dataset
 
     try:
-        network = Network.objects.get(name=name)
+        tdd = TDD.load(fullname, directory_name + '/LinkIndex')
     except:
-        return HttpResponseRedirect('error/Unable to identify network: %s' % name) 
+        return HttpResponse(simplejson.dumps({'status': 'No such dataset: %s' % fullname}), mimetype='application/json')
+
+    data = {variable_name: {'timesteps': tdd.timesteps, 'ids': tdd.ids, 'data': tdd.data.tolist()}}
+    r = {'status': 'OK', 'linkdata': data}
+    rjson = simplejson.dumps(r)
+
+    return HttpResponse(rjson, mimetype='application/json')
+
+
+def load_network(request, database):
+    
+    try:
+        network = Network.objects.get(database=database)
+    except:
+        return HttpResponseRedirect('error/Unable to identify network: %s' % database) 
     else:
         if network == None:
-            return HttpResponseRedirect('error/Unable to identify network: %s' % name) 
-
+            return HttpResponseRedirect('error/Unable to identify network: %s' % database) 
+        
     try:
         network.load()
     except:
-        return HttpResponseRedirect('error/Unable to load network: %s' % name)
+        return HttpResponseRedirect('error/Unable to load network: %s' % database)
+          
+    nodelist = []
+    for n in network.nodes:
+        nodelist.append([n.nid, n.ntype, n.point, n.attributes])
+  
+    idlist  = []
+    linklist    = []    
+    linkattrvalues  = []
+    for i in network.linkattrs:
+        linkattrvalues.append([])
+
+    for l in network.links:
+        idlist.append(l.lid)
+        linklist.append([l.lid, l.ltype, l.src, l.dst, l.path])
+        for i,a in enumerate(linkattrvalues):
+            a.append(l.attributes[i])
+
+    linkattributes = {}
+    for i,attrname in enumerate(network.linkattrs):
+        if attrname == 'length':
+            attrname = 'len'
+        linkattributes[attrname] = {'timesteps': [0], 'ids': idlist, 'data': [linkattrvalues[i]]}
+
+    busroutes = {}
+    for bid in network.busroutes:
+        br = network.busroutes[bid].split(',')
+        busroutes[bid] = [int(a) for a in br]
     
-    args = {}
-    args['name'] = name
-    args['nodes'] = network.nodes
-    args['nodetypes'] = network.nodetypes.split(',')
-    args['links'] = network.links
-    args['linktypes'] = network.linktypes.split(',')
-    args['busroutes'] = network.busroutes
-    return render(request, 'visualize.html', args)
+    result = {
+        'nodes': nodelist, 'nodeTypes': network.nodetypes.split(','), 'nodeAttributes': {}, 
+        'links': linklist, 'linkTypes': network.linktypes.split(','), 'linkAttributes': linkattributes, 
+        'busroutes': busroutes
+    }
+              
+    s = simplejson.dumps(result)
+
+    return HttpResponse(s, mimetype='application/json')
+
+def visualize(request, database):
+
+    try:
+        network = Network.objects.get(database=database)
+    except:
+        return HttpResponseRedirect('error/Unable to identify network: %s' % database) 
+    else:
+        if network == None:
+            return HttpResponseRedirect('error/Unable to identify network: %s' % database) 
     
+    return render(request, 'visualize.html', {'database': database})
 
 def network_error(request, errormsg):    
     return render(request, 'database_open_error.html', {"errormsg": errormsg})
@@ -103,7 +203,6 @@ def new_network(request):
     if request.method == 'POST':
         form = NewNetworkForm(request.POST)
         if form.is_valid():
-            name     = form.cleaned_data['name']
             host     = form.cleaned_data['host']
             user     = form.cleaned_data['user']
             password = form.cleaned_data['password']
@@ -114,13 +213,13 @@ def new_network(request):
             return HttpResponseRedirect('error/Unable to access database')
         else:
             try:
-                network = Network.objects.get(name=name)
+                network = Network.objects.get(database=database)
                 network.host = host
                 network.user = user
                 network.password = password
                 network.database = database
             except:
-                network = Network.objects.create_network(name, host, user, password, database)
+                network = Network.objects.create_network(host, user, password, database)
             network.save()
             return HttpResponseRedirect('ok')
     else:

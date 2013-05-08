@@ -1,0 +1,49 @@
+        html, body, div {
+          margin: 0px;
+          padding: 0px;
+        }       
+        header {
+          background-color: lightgrey;   
+        }
+        div.controls {
+          background-color: lightgrey;
+          position: absolute;
+          top: 50px;
+          width: 100%;
+          height: 120px;
+        }
+        div.mapcntr {
+          position: absolute;
+          top: 170px;
+          bottom: 0px;
+          width: 100%;
+          background-color: lightgrey;
+        }
+        div.smallmap {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+           width: 100%;
+          background-color: lightgrey;
+        }
+        div.col0 {
+          position: relative;
+          float: left;
+          width: 20%;
+          height: 100%;
+          background-color: lightgrey;
+        }
+        div.col1 {
+          float: left;
+          position: relative;
+          height: 100%;
+          width: 20%;
+          background-color: lightgrey;
+        }
+        div.col2 {
+          float: left;
+          position: relative;
+          height: 100%;
+          width: 60%;
+          background-color: lightgrey;
+        }

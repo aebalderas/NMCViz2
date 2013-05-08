@@ -1,146 +1,46 @@
-html, body, div {
-  width: 100%;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-weight: 300;
-  color: #000;
-  margin: 0px;
-  padding: 0px;
-}  
-             
-  header {
-    background-color:transparent;
-  }
-       div.mapcntr {
-          position: absolute;
-          top: 0px;
-          bottom: 0px;
-          width: 100%;
-          background-color:transparent;
-          z-index: -1;
+        html, body {
+        	margin: 0px;
+        	padding: 0px;
+        }       
+        html {
+        	height: 97%;
         }
-        div.smallmap {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          width: 100%;
-          background-color:transparent;
+        body {
+        	background-color: lightgrey;
         }
-        
-        #top_container{
-	    width: 100%;
-	    font-family: 'Source Sans Pro', sans-serif;
-	    font-weight: 300;
-	    color: #000;
-	    background-color: #FFF;
-	    }
-
-	    #network_panel{
-	    margin-top: 2px;
-		float: left;
-		width: 33%;  
+        #main_container {
+        	height: 100%;
+        }
+        #controls {
+        	width: 100%;
+        	display: inline-block;
+        	background-color: lightgrey;         
+        }
+        #map {
+            position: relative;
+        	width: 100%;
+        }
+        #col0 {
+        	position: relative;
+        	float: left;
+        	width: 20%;
+        	height: 100%;
+        }
+        #col1 {
+        	float: left;
+        	position: relative;
+        	height: 100%;
+        	width: 25%;
+        }
+        #col2 {
+        	float: left;
+        	position: relative;
+        	height: 100%;
+        	width: 55%;
+        }
+		#mapToggleButton {
+			position:absolute;
+			top:5px;
+			right:10px;
+			z-index:1001
 		}
-		#link_panel{
-		margin-top: 2px;
-    	float: left;
-		width: 33%;
-		border-left: solid 1px;
-		border-right: solid 1px;
-		border-color: #000;
-	    }
-	    #nodes_panel{
-	    margin-top: 2px;
-		float: left;
-	    width: 33%;
-	    }  
-	    
-a:focus {
-	outline: none;
-}
-#panel {
-	background: #fff;
-	height: 200px;
-	display: none;
-}
-.slide {
-	margin: 0;
-	padding: 0;
-	border-top: solid 10px #000;
-	}
-.btn-slide {
-	background-color: #000;
-	text-align: center;
-	margin-left: 50px;
-	width: 144px;
-	height: 31px;
-	padding: 10px 10px 0 0;
-	
-	display: block;
-	font: bold 120%/100% 'Source Sans Pro', sans-serif;
-    color: #fff;
-	text-decoration: none;
-}
-.active {
-	background-position: right 12px;
-}
-
-input, button {
-	font-family: 'Source Sans Pro', sans-serif;
-	font-size: 12px;
-	color: #ffffff;
-	padding: 5px 10px;
-	background: -moz-linear-gradient(
-		top,
-		#000000 0%,
-		#000000);
-	background: -webkit-gradient(
-		linear, left top, left bottom, 
-		from(#000000),
-		to(#000000));
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-	border: 0px solid #ffbf00;
-	-moz-box-shadow:
-		0px 0px 0px rgba(000,000,000,0.4),
-		inset 0px 0px 0px rgba(255,255,255,1);
-	-webkit-box-shadow:
-		0px 0px 0px rgba(000,000,000,0.4),
-		inset 0px 0px 0px rgba(255,255,255,1);
-	box-shadow:
-		0px 0px 0px rgba(000,000,000,0.4),
-		inset 0px 0px 0px rgba(255,255,255,1);
-	text-shadow:
-		0px 0px 0px rgba(000,000,000,0),
-		0px 0px 0px rgba(255,255,255,0);
-}
-
-input[type=text] {
-	font-family: 'Source Sans Pro', sans-serif;
-	font-size: 12px;
-	color: #000000;
-	padding: 5px 10px;
-	background: -moz-linear-gradient(
-		top,
-		#ffffff 0%,
-		#ffffff);
-	background: -webkit-gradient(
-		linear, left top, left bottom, 
-		from(#ffffff),
-		to(#ffffff));
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-	border: 2px solid #030303;
-	-moz-box-shadow:
-		0px 0px 0px rgba(000,000,000,0),
-		inset 0px 0px 0px rgba(255,255,255,0);
-	-webkit-box-shadow:
-		0px 0px 0px rgba(000,000,000,0),
-		inset 0px 0px 0px rgba(255,255,255,0);
-	box-shadow:
-		0px 0px 0px rgba(000,000,000,0),
-		inset 0px 0px 0px rgba(255,255,255,0);
-	text-shadow:
-		0px 0px 0px rgba(000,000,000,0),
-		0px 0px 0px rgba(255,255,255,0);
-}

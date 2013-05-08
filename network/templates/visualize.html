@@ -6,127 +6,118 @@ Main page of the website.
 {% endcomment %}
 
 {% block head %}
-<link href="{{ STATIC_URL }}css/vis.css" rel="stylesheet" type="text/css" />
+<link href="{{ STATIC_URL }}/css/vis.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/jquery.cookies.2.2.0.min.js"></script>
 <script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/OpenLayers.js"></script>
 <script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/paths.js"></script>
 <script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/vis.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-
-	$(".btn-slide").click(function(){
-		$("#panel").slideToggle("slow");
-		$(this).toggleClass("active"); return false;
-	});	 
-});
-</script>
-
 <title>NMC</title>
 {% endblock %}
 
-{% block body %}
-<div id="panel">
-  <div id="top_container" align="">
-
-	<div id="network_panel">
-	<table>
-	<tr><td><b>Network</b></td></tr>
-	<tr><td><button onclick="toggleMap()" value="Toggle map" class="css3button">Toggle Map</button></td>
-		<td><input type="button" id="load_data" value="Load Data" disabled="true" onclick="load_data()" class="css3button">
-		    <input type="button" id="animate"   value="Animate"   disabled="true" onclick="animate()"   class="css3button"></td></tr>
-    <tr><td>Start</td>   <td><input type="text" id="data_start"    value="" onkeyup="check_load_data()"></td></tr>
-    <tr><td>Interval</td><td><input type="text" id="data_interval" value="" onkeyup="check_load_data()"></td></tr>    
-    <tr><td>End</td>     <td><input type="text" id="data_end"      value="" onkeyup="check_load_data()"></td></tr>
-  	</table>
-       <input type="radio"  id="selection_type_nodelink" name="selection_type" value="types" onclick="selection_type()" checked="true">Node/Link Types
-       <input type="radio"  id="selection_type_busroute" name="selection_type" value="busroutes" onclick="selection_type()">Bus Routes
-       <br/>
-       <div id="busRouteSelect" style="visibility:hidden;">Bus Routes:<br> 
-       <div id="busroutes" style="">
-         {% for br in busroutes %}<div style="width:45px;height:20px;float:left;position:relative"><input type="checkbox" name="busroutes" value="{{ br }}" checked="yes" onclick=redraw() >{{ br }}</div>{% endfor %}
-       </div>
-       </div>
-	</div>
-  
-	<div id="link_panel">
-	  <b>Links</b>
-       <table>
-         <tr>
-           <td>Offset</td>
-           <td><input id="link_offset" type="text" value="0.0001" onkeypress="offsetLinks(event)"></td>
-         </tr>
-         <tr>
-           <td>Color By</td>
-           <td><select id='link_color' onchange="link_color_selection()"></select></td>
-         </tr>
-       </table>
-       <p>Show Types:</p>
-       {% for lt in linktypes %}<input type="checkbox" name="linktypes" value={{ lt }} checked="yes" onclick="redraw()">{{ lt }}<br>{% endfor %}
-	</div>
-	
-	<div id="nodes_panel">
-	  <b>Nodes</b>
-      <table>
-         <tr>
-            <td>Color By</td>
-            <td><select id='node_color' onchange="node_color_selection()"></select></td>
-          </tr>
-      </table>
-      <p>Show Types:</p>
-      {% for nt in nodetypes %}<input type="checkbox" name="nodetypes" value={{ nt }} checked="yes" onclick="redraw()">{{ nt }}<br>{% endfor %}
-	</div>
+{% block content %}
+<body id="main_container" onload=resize_map() onresize=resize_map()>
+<header>
+<h1>NMC</h1>
+</header>
+<div id="controls">
+  <div id="col0">
+    <div style="margin-left:10px;">
+      <div id="selectionPanel">
+        <label>Select by:</label><br>
+        <input type="radio" id="selection_type_nodelink" name="selection_type" value="types" onclick="selection_type()" checked="true">Node/Link Types<br>
+        <input type="radio" id="selection_type_busroute" name="selection_type" value="busroutes" onclick="selection_type()">Bus Routes<br>
+        <input type="radio" id="selection_type_paths"    name="selection_type" value="paths" onclick="selection_type()">Path Selection<br>
+      </div>
+      <div>
+        <input style="float:left;position:relative" type="button" id="run_animation_button" value="Run" disabled="true" onclick='animation_toggle()'>
+        <input style="float:left;position:relative" type="button" id="step_animation_button" value="Step" disabled="true" onclick='animation_step()'>
+        <div style="width:120px;float:left;position:relative;left:20px;top:5px">Current Timestep:</div>
+        <div id="current_timestep" style="width:30px;float:left;position:relative;left:12px;top:5px">0</div>
+      </div>
+    </div>
+  </div>
+  <div id="col1">
+    <div id="attribute_panel" style="position:relative;left:0px;top:0px">
+      <div style="width:49%;float:left;position:relative">
+        <label>Color links by:</label>
+      </div>
+      <div style="width:49%;float:left;position:relative">
+        <select id='link_color_select' onchange="link_color_selection()"></select>
+        <input type="button" value="+" onclick=load_link_data_dialog()>
+      </div>
+      <div style="width:49%;float:left;position:relative">
+        <label>Color nodes by:</label>
+      </div>
+      <div style="width:49%;float:left;position:relative">
+        <select id='node_color_select' onchange="node_color_selection()"></select>
+        <input type="button" value="+" onclick='alert("add node color attribute")'>
+      </div style="width:49%;float:left;position:relative">
+      <div style="width:49%;float:left;position:relative">
+     	<label>Path Datasets:</label>
+      </div>
+      <div style="width:49%;float:left;position:relative">
+        <select id='path_data_select' onchange="path_data_selection()">
+         none
+        </select>
+        <input type="button" value="+" onclick=load_path_data_dialog()>
+      </div>
+      <div style="width:49%;float:left;position:relative">
+     	  <label>Color path by:</label>
+      </div>
+      <div style="width:49%;float:left;position:relative">
+        <select id='path_color_select' onchange="path_color_selection()">
+        	<option value="constant" selected>constant</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div id="col2">
+    <div id="nodeLinkTypeSelect" style="height:100%;visibility:visible;position:relative;width:100%">
+      <div id="node_type_panel" style="float:left;width:30%;">
+        <label>Node Types:</label><br>
+        <div id="nodeTypes"></div>
+      </div>
+      <div id="link_type_panel" style="float:left;width:30%;">
+        <label>Link Types:</label><br>
+        <div id="linkTypes"></div><br>
+      </div>      
+      <div id="link_capacity_panel" style="float:left;">
+        <label>Minimum displayed link capacities:</label><br>
+        <input type="radio" id="capacity_level_2000" name="capacity_level" value="2000" onclick="redraw()" checked="true">2000<br>
+        <input type="radio" id="capacity_level_1500" name="capacity_level" value="1000" onclick="redraw()"               >1500<br>
+        <input type="radio" id="capacity_level_1000" name="capacity_level" value="1000" onclick="redraw()"               >1000 <br>
+        <input type="radio" id="capacity_level_0"    name="capacity_level" value="0"    onclick="redraw()"               >all  <br>
+      </div>
+      
+    </div>
+    <div id="pathSelect" style="visibility:hidden;position:absolute;left:0px;top:0px">
+  	  <div>Origin Nodes:     
+  	      <input id="path_origins" type="text" disabled="true">
+  	      <input type="button" id="origin_selection_done_button" style="visibility:hidden" value="done" onclick="origin_selection_done()">
+  	      <input type="button" id="origin_selection_clear_button" style="visibility:hidden" value="clear" onclick="origin_selection_clear()"> 
+   	  </div>
+  	  <div>Destination Nodes:
+  	      <input id="path_destinations" type="text" disabled="true">
+ 	      <input type="button" id="destination_selection_done_button" style="visibility:hidden" value="done" onclick="destination_selection_done()">
+  	      <input type="button" id="destination_selection_clear_button" style="visibility:hidden" value="clear" onclick="destination_selection_clear()"> 
+  	  </div>
+	  <div><input type='button' id="new_path_selection_button" style="visibility:hidden" value='New' onclick="new_path_selection()"></div>
+    </div>
+    <div id="busRouteSelect" style="visibility:hidden;position:absolute;left:0px;top:0px">Bus Routes:<br> 
+  	  <div id="busroutes" style="position:relative;float:left"></div>
+    </div>
   </div>
 </div>
-<p class="slide"><a href="#" class="btn-slide">Menu</a></p>
-
-
-<div class="mapcntr">
-<div id="map" class="smallmap"></div>
+<div id="map">
+	<div style="position:absolute;right:10px;z-index:1001">
+		<label style="float:left" >Map Intensity:</label>
+		<input style="float:left;right:10px;z-index:1001"" id="mapIntensityUp" type="button" onclick="change_map_intensity(0.1)" value="Up">
+		<input style="float:left;right:10px;z-index:1001"" id="mapIntensityDown" type="button" onclick="change_map_intensity(-0.1)" value="Down">
+	</div>
 </div>
 <script type="text/javascript">
-
-var network_name = "{{ name }}";
-
-var links = [
-	{% for l in links %}
-	{
-		linkid: {{ l.lid }},
-		type: {{ l.ltype }},
-		source_id: {{ l.src }},
-		destination_id: {{ l.dst }},
-		path: [
-		{% for x,y in l.path %}
-			[{{ x }}, {{ y }}],
-		{% endfor %} 
-		], 
-		attrs: {
-		{% for k,v in l.attributes.items %}
-			"{{ k }}": {{ v }},
-		{% endfor %}
-		},
-	},
-	{% endfor %}
-];
-
-var nodes = [
-	{% for n in nodes %}
-	{
-		nodeid: {{ n.nid }},
-		type: {{ n.ntype }},
-		point: {{ n.point }},
-		attrs: {
-		{% for k,v in n.attributes.items %}
-			"{{ k }}": {{ v }},
-		{% endfor %}
-		},
-	},
-	{% endfor %}
-	];
-	
-var busroutes = {
-	{% for k,v in busroutes.items %}
-		"{{ k }}" : [ {{ v }} ],
-	{% endfor %}
-};
+var network_name = "{{ database }}";
 </script>
+<div id="dialog" title="Basic Dialog"><p>hello</p></div>
+</body> 
 {% endblock %}
