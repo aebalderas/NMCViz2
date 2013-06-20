@@ -1,123 +1,95 @@
 {% extends "base.html" %}
 {% comment %}
-
 Main page of the website.
-
 {% endcomment %}
-
 {% block head %}
-<link href="{{ STATIC_URL }}/css/vis.css" rel="stylesheet" type="text/css" />
+<title>N M C</title>
+<link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/jquery.cookies.2.2.0.min.js"></script>
 <script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/OpenLayers.js"></script>
 <script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/paths.js"></script>
 <script type="text/javascript" language="javascript" src="{{ STATIC_URL }}lib/vis.js"></script>
-<title>NMC</title>
 {% endblock %}
-
 {% block content %}
 <body id="main_container" onload=resize_map() onresize=resize_map()>
 <header>
-<h1>NMC</h1>
+  <img src="//farm8.staticflickr.com/7353/9041058559_258e0ac56e_o.png" class="img-polaroid">
 </header>
+<div>
+  <button id="toggleControls" class="btn btn-inverse" onclick=toggleControls()>Toggle Controls</button>
+  <button class="btn btn-small btn-inverse" id="mapIntensityUp" type="button" onclick="change_map_intensity(0.1)" value="Up">Up</button>
+  <button class="btn btn-small btn-inverse" id="mapIntensityDown" type="button" onclick="change_map_intensity(-0.1)" value="Down">Down</button>
+  <label id="mapIntensityLabel"><em><strong>Map Intensity: </strong></em></label>
+</div>
 <div id="controls">
-  <div id="col0">
-    <div style="margin-left:10px;">
-      <div id="selectionPanel">
-        <label>Select by:</label><br>
-        <input type="radio" id="selection_type_nodelink" name="selection_type" value="types" onclick="selection_type()" checked="true">Node/Link Types<br>
-        <input type="radio" id="selection_type_busroute" name="selection_type" value="busroutes" onclick="selection_type()">Bus Routes<br>
-        <input type="radio" id="selection_type_paths"    name="selection_type" value="paths" onclick="selection_type()">Path Selection<br>
-      </div>
-      <div>
-        <input style="float:left;position:relative" type="button" id="run_animation_button" value="Run" disabled="true" onclick='animation_toggle()'>
-        <input style="float:left;position:relative" type="button" id="step_animation_button" value="Step" disabled="true" onclick='animation_step()'>
-        <div style="width:120px;float:left;position:relative;left:20px;top:5px">Current Timestep:</div>
-        <div id="current_timestep" style="width:30px;float:left;position:relative;left:12px;top:5px">0</div>
-      </div>
-    </div>
+  <div id="selectionPanel">
+    <legend>Select By:</legend>
+    <input type="radio" id="selection_type_nodelink" name="selection_type" value="types" onclick="selection_type()" checked="true"> Node/Link Types<br>
+    <input type="radio" id="selection_type_busroute" name="selection_type" value="busroutes" onclick="selection_type()"> Bus Routes<br>
+    <input type="radio" id="selection_type_paths"    name="selection_type" value="paths" onclick="selection_type()"> Path Selection<br>
   </div>
-  <div id="col1">
-    <div id="attribute_panel" style="position:relative;left:0px;top:0px">
-      <div style="width:49%;float:left;position:relative">
-        <label>Color links by:</label>
-      </div>
-      <div style="width:49%;float:left;position:relative">
-        <select id='link_color_select' onchange="link_color_selection()"></select>
-        <input type="button" value="+" onclick=load_link_data_dialog()>
-      </div>
-      <div style="width:49%;float:left;position:relative">
-        <label>Color nodes by:</label>
-      </div>
-      <div style="width:49%;float:left;position:relative">
-        <select id='node_color_select' onchange="node_color_selection()"></select>
-        <input type="button" value="+" onclick='alert("add node color attribute")'>
-      </div style="width:49%;float:left;position:relative">
-      <div style="width:49%;float:left;position:relative">
-     	<label>Path Datasets:</label>
-      </div>
-      <div style="width:49%;float:left;position:relative">
-        <select id='path_data_select' onchange="path_data_selection()">
-         none
-        </select>
-        <input type="button" value="+" onclick=load_path_data_dialog()>
-      </div>
-      <div style="width:49%;float:left;position:relative">
-     	  <label>Color path by:</label>
-      </div>
-      <div style="width:49%;float:left;position:relative">
-        <select id='path_color_select' onchange="path_color_selection()">
-        	<option value="constant" selected>constant</option>
-        </select>
-      </div>
+  <div id='runStepDiv'>
+    <button type="button" class="btn btn-small btn-primary" style="float:left;position:relative" id="run_animation_button" value="Run" disabled="true" onclick='animation_toggle()'>Run</button>
+    <button type="button" class="btn btn-small btn-primary" style="float:left;position:relative" id="step_animation_button" value="Step" disabled="true" onclick='animation_step()'>Step</button><br><br>
+    <div style="width:120px"><em>Current Timestep:</em></div> 
+    <div id="current_timestep" style="width:30px">0</div>
+  </div><br><br>
+  <div id="attribute_panel">
+    <legend>Mapping Attributes</legend>
+    <label>Color Links By:</label>
+    <select id='link_color_select' onchange="link_color_selection()"></select>
+    <input type="button" value="+" onclick=load_link_data_dialog()>
+    <label>Color Nodes By:</label>
+    <select id='node_color_select' onchange="node_color_selection()"></select>
+    <input type="button" value="+" onclick='alert("add node color attribute")'>
+    <label>Path Datasets:</label>
+    <select id='path_data_select' onchange="path_data_selection()">none</select>
+    <input type="button" value="+" onclick=load_path_data_dialog()>
+    <label>Color path by:</label>
+    <select id='path_color_select' onchange="path_color_selection()">
+      <option value="constant" selected>constant</option>
+    </select>
+  </div><br><br>
+  <div id="nodeLinkTypeSelect">
+    <legend>Node/Link Types</legend>
+    <div id="node_type_panel">
+      <label>Node Types:</label>
+      <div id="nodeTypes"></div><br>
     </div>
-  </div>
-  <div id="col2">
-    <div id="nodeLinkTypeSelect" style="height:100%;visibility:visible;position:relative;width:100%">
-      <div id="node_type_panel" style="float:left;width:30%;">
-        <label>Node Types:</label><br>
-        <div id="nodeTypes"></div>
-      </div>
-      <div id="link_type_panel" style="float:left;width:30%;">
-        <label>Link Types:</label><br>
-        <div id="linkTypes"></div><br>
-      </div>      
-      <div id="link_capacity_panel" style="float:left;">
-        <label>Minimum displayed link capacities:</label><br>
-        <input type="radio" id="capacity_level_2000" name="capacity_level" value="2000" onclick="redraw()" checked="true">2000<br>
-        <input type="radio" id="capacity_level_1500" name="capacity_level" value="1000" onclick="redraw()"               >1500<br>
-        <input type="radio" id="capacity_level_1000" name="capacity_level" value="1000" onclick="redraw()"               >1000 <br>
-        <input type="radio" id="capacity_level_0"    name="capacity_level" value="0"    onclick="redraw()"               >all  <br>
-      </div>
-      
+    <div id="link_type_panel">
+      <label>Link Types:</label>
+      <div id="linkTypes"></div><br>
+    </div>      
+    <div id="link_capacity_panel">
+      <label>Minimum Link Capacities:</label>
+      <input type="radio" id="capacity_level_2000" name="capacity_level" value="2000" onclick="redraw()" checked="true">2000<br>
+      <input type="radio" id="capacity_level_1500" name="capacity_level" value="1000" onclick="redraw()"               >1500<br>
+      <input type="radio" id="capacity_level_1000" name="capacity_level" value="1000" onclick="redraw()"               >1000 <br>
+      <input type="radio" id="capacity_level_0"    name="capacity_level" value="0"    onclick="redraw()"               >all  <br>
     </div>
-    <div id="pathSelect" style="visibility:hidden;position:absolute;left:0px;top:0px">
-  	  <div>Origin Nodes:     
-  	      <input id="path_origins" type="text" disabled="true">
-  	      <input type="button" id="origin_selection_done_button" style="visibility:hidden" value="done" onclick="origin_selection_done()">
-  	      <input type="button" id="origin_selection_clear_button" style="visibility:hidden" value="clear" onclick="origin_selection_clear()"> 
-   	  </div>
-  	  <div>Destination Nodes:
-  	      <input id="path_destinations" type="text" disabled="true">
- 	      <input type="button" id="destination_selection_done_button" style="visibility:hidden" value="done" onclick="destination_selection_done()">
-  	      <input type="button" id="destination_selection_clear_button" style="visibility:hidden" value="clear" onclick="destination_selection_clear()"> 
-  	  </div>
-	  <div><input type='button' id="new_path_selection_button" style="visibility:hidden" value='New' onclick="new_path_selection()"></div>
-    </div>
-    <div id="busRouteSelect" style="visibility:hidden;position:absolute;left:0px;top:0px">Bus Routes:<br> 
-  	  <div id="busroutes" style="position:relative;float:left"></div>
-    </div>
-  </div>
-</div>
-<div id="map">
-	<div style="position:absolute;right:10px;z-index:1001">
-		<label style="float:left" >Map Intensity:</label>
-		<input style="float:left;right:10px;z-index:1001"" id="mapIntensityUp" type="button" onclick="change_map_intensity(0.1)" value="Up">
-		<input style="float:left;right:10px;z-index:1001"" id="mapIntensityDown" type="button" onclick="change_map_intensity(-0.1)" value="Down">
-	</div>
-</div>
+  </div><br>
+  <div id="busRouteSelect" >
+    <legend>Bus Routes</legend>
+    <div id="busroutes"></div>
+  </div><br><br>
+  <div id="pathSelect">
+    <legend>Path Selection</legend>
+      <label>Origin Nodes:</label>     
+        <input class="input-small" id="path_origins" type="text" disabled="true" placeholder="Origin...">
+		  <input type="button" id="origin_selection_done_button" style="visibility:hidden" value="done" onclick="origin_selection_done()">
+		  <input type="button" id="origin_selection_clear_button" style="visibility:hidden" value="clear" onclick="origin_selection_clear()"> 
+        <label>Destination Nodes:</label>
+		  <input class="input-small" id="path_destinations" type="text" disabled="true" placeholder="Destination...">
+		  <input type="button" id="destination_selection_done_button" style="visibility:hidden" value="done" onclick="destination_selection_done()">
+		  <input type="button" id="destination_selection_clear_button" style="visibility:hidden" value="clear" onclick="destination_selection_clear()"> 
+		  <input type='button' id="new_path_selection_button" style="visibility:hidden" value='New' onclick="new_path_selection()">
+  </div><br><br>
+</div><br>
+<div id="map"></div>
 <script type="text/javascript">
 var network_name = "{{ database }}";
 </script>
 <div id="dialog" title="Basic Dialog"><p>hello</p></div>
-</body> 
+</body>
+<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 {% endblock %}

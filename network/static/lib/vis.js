@@ -28,7 +28,7 @@ var path_destination_node 	= -1;
 var path_origin_node      	= -1;
 var path_properties 		= [];
 var map_intensity 			= 1.0
-
+var controlsHidden = false;
 var popupControl;
 var selectionControl;
 
@@ -56,6 +56,21 @@ $(document).ready(function() {
 	
 	$( "#dialog" ).dialog({autoOpen: false});
 });
+
+// toggle the control section of html
+function toggleControls() {
+    if (controlsHidden == false) { // not hidden --> hide
+		$('#controls').animate({"left": "-=15%", "width": "-=15%"},
+							    "slow"); 
+		$('#map').animate({"width": "+=14%"}, "slow"); 
+		controlsHidden = true;
+	}
+	else {
+		$('#map').animate({"width": "-=14%"}, "slow");
+		$('#controls').animate({"left": "+=15%", "width": "+=15%"}, "slow");
+		controlsHidden = false;
+	}
+}
 
 function position_map(lon, lat, d)
 {
@@ -979,7 +994,16 @@ function receive_paths(data)
     path_mode = 2
 	redraw()
 }
-
+function adjustSelections() {
+    if (document.getElementById('selection_type_busrout').checked) {
+		// get the height of control to be hidden
+		var height = document.getElementById('nodeLinkTypeSelect').style.height
+        $('#nodeLinkTypeSelect').animate({"left": "-=15%", "width": "-=15%"},
+							    "slow"); 
+		$('#busRouteSelect').animate({"top": "+=" + height.toString() + "px"}, "slow"); 
+		controlsHidden = true;
+	}
+}
 function selection_type()
 {
 	if (document.getElementById('selection_type_nodelink').checked)
@@ -1070,6 +1094,7 @@ function val_to_color(v, min, max)
 function change_map_intensity(v)
 {
 	map_intensity = map_intensity + v
+	console.log(map_intensity)
 	if (map_intensity >= 1.0) 
 	{
 		document.getElementById('mapIntensityUp').disabled = true
