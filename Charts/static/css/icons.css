@@ -1,0 +1,74 @@
+.map {
+  position: absolute;
+  left: 4.778in;
+  top: 7.903in;
+  width: 1.5in;
+  height: 1.375in;
+  z-index: 70;
+}
+.Shape1 {
+  background-color: rgb( 0, 0, 0 );
+  position: absolute;
+  left: 0.667in;
+  top: 0.417in;
+  width: 0.167in;
+  height: 0.181in;
+  z-index: 69;
+}
+.Shape2 {
+  background-image: -moz-linear-gradient( 145deg, rgb( 0, 0, 0 ) 0%, rgb( 0, 0, 0 ) 100%);
+  background-image: -webkit-linear-gradient( 145deg, rgb( 0, 0, 0 ) 0%, rgb( 0, 0, 0 ) 100%);
+  position: absolute;
+  left: 0.528in;
+  top: 0.278in;
+  width: 0.444in;
+  height: 0.806in;
+  z-index: 68;
+}
+.Shape3 {
+  background-color: rgb( 255, 255, 255 );
+  position: absolute;
+  left: 1.125in;
+  top: 0.875in;
+  width: 0.375in;
+  height: 0.403in;
+  z-index: 67;
+}
+.shadow {
+  background-color: rgb( 0, 0, 0 );
+  position: absolute;
+  left: 0.708in;
+  top: 0.889in;
+  width: 0.417in;
+  height: 0.431in;
+  z-index: 66;
+}
+.overlay {
+  background-color: rgb( 0, 0, 0 );
+  position: absolute;
+  left: 0.5in;
+  top: 0.014in;
+  width: 0.5in;
+  height: 1.333in;
+  z-index: 65;
+}
+.Shape4 {
+  background-color: rgb( 158, 190, 199 );
+  position: absolute;
+  left: 0.056in;
+  top: 0.069in;
+  width: 1.389in;
+  height: 1.236in;
+  z-index: 64;
+}
+.Shape5 {
+  background-image: -moz-linear-gradient( 45deg, rgb( 0, 0, 0 ) 0%, rgb( 0, 0, 0 ) 100%);
+  background-image: -webkit-linear-gradient( 45deg, rgb( 0, 0, 0 ) 0%, rgb( 0, 0, 0 ) 100%);
+  box-shadow: 0in 0.028in 0in 0in rgb( 0, 0, 0 );
+  position: absolute;
+  left: 0in;
+  top: 0in;
+  width: 1.5in;
+  height: 1.347in;
+  z-index: 63;
+}

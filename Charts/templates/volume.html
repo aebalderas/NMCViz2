@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>{{ network }}</title>
+<script src="{{ STATIC_URL }}js/highcharts.js"></script>
+<script src="{{ STATIC_URL }}js/exporting.js"></script>
+
+{% endblock%}
+
+{% block content %}
+<div class="container">
+
+  <!-- Example row of columns -->
+  <div class="row">
+    <div class="span12 ">
+      <div>
+        <h2>
+          <span><img class= "icon" src="{{ STATIC_URL }}images/CountsIcon.png" /></span>
+          {{ network }}
+        </h2> 
+      </div>  
+    </div>
+  </div><!--Row-->
+  
+  <div class="row">
+    <div class="span12 ">
+      <div id="container" style="min-width: 400px; min-height: 400px; margin: 0 auto"></div>
+    </div>
+  </div>
+
+  <footer> 
+  </footer>
+
+</div> <!-- /container -->
+<script>
+var db = "{{ network }}";
+var user = "{{ user }}";
+var pwd = "{{ pwd }}";
+var host = "{{ host }}";
+var simvat = "{{ simvat }}";
+var links = [{{links}}];
+var start = {{ start }};
+var end = {{ end }};
+</script>
+<script src="{{ STATIC_URL }}js/volume.js"></script>
+{% endblock %}
+  

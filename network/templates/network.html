@@ -1,26 +1,33 @@
 {% extends "base.html" %}
-{% comment %}
-    
-Main page of the website.
-
-{% endcomment %}
-
 {% block head %}
-    <title>NMC</title>
+    <title>Network Visualizer</title>
 {% endblock %}
 
 {% block content %}
-<body>
-    <header>
-        <h1>NMC Visualizer</h1>
-    </header>
-    Networks:
-    <ul>
+
+<div class="hero-unit big-banner">
+  <h1>NMC Network Visualizer</h1>
+</div>
+
+<div class="row">
+    <div class="span12">
+    
+    <h1>Networks:</h1>
+    
 	{% for db in databases %}
-	  <li><a href='visualize/{{ db }}'>{{ db }}</a></li>
+	 <form action="visualize/{{ db }}">
+	   <input class="btn btn-large btn-inverse" type="submit" value="{{ db }}">
+	 </form>
 	{% endfor %}	
-	</ul>
+	
 	<br>
-	<a href='new'>New</a>
-</body>
+	
+	
+	<form action="new">
+	   <input class="btn btn-large btn-inverse" type="submit" value="+ Add Network">
+	 </form>
+    </div>
+</div>
+<footer>
+</footer>
 {% endblock %}

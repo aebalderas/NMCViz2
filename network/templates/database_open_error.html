@@ -10,12 +10,13 @@ Main page of the website.
 {% endblock %}
 
 {% block content %}
-<block>
-    <header>
-        <h1>NMC</h1>
-    </header>
-    {{ errormsg }}</br>
-    <a href="/network/new">Retry</a></br>
-    <a href="/network">Cancel</a></br>
-<block>
+    <div class="row">
+    <div class="span12 ">
+   
+   
+    <h1>{{ errormsg }}</h1>
+    <a class="btn btn-inverse" href="/network/new">Retry</a>
+    <a class="btn btn-inverse" href="/network">Cancel</a></br>
+    </div>
+    </div>
 {% endblock %}

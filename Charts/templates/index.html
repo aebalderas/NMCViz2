@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>NMC Visualization</title>
+{% endblock%}
+
+{% block content %}
+<div class="container">
+
+  <!-- Main hero unit for a primary marketing message or call to action -->
+  <div class="hero-unit big-banner pagination-centered">
+    
+    <div class="logo"><img src="{{ STATIC_URL }}images/nmclogo.png" /></div> 
+  </div>
+
+  <div class="row">
+    <div class="span6 pagination-centered">
+      <h2>Map Vizualization</h2>
+      <div><a href="/network/"><img src="{{ STATIC_URL }}images/Map_Icon.png" /></a></div>  
+    </div>
+   
+    <div class="span6 pagination-centered">
+      <h2>NMCharts</h2>
+      <div><a href="/charts/"><img src="{{ STATIC_URL }}images/Chart_Icon.png " /></a></div>    
+    </div>
+  </div>
+  
+  <footer>
+  </footer>
+</div> <!-- /container -->
+{% endblock %}
+   

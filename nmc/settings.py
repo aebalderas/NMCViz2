@@ -12,7 +12,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/home/gda/eclipse-workspace/nmc/sqlite.db',
+        'NAME': '/Users/Carlos/nmc_tacc/NMC_TACC_visualization/sqlite.db',
         'USER': '',          
         'PASSWORD': '',     
         'HOST': '',        
@@ -56,7 +56,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/home/gda/eclipse-workspace/nmc/staticfiles'
+STATIC_ROOT = '/Users/Carlos/nmc_tacc/NMC_TACC_visualization/Charts/static'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -64,6 +64,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+    '/Users/Carlos/nmc_tacc/NMC_TACC_visualization/network/static',
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -104,6 +105,8 @@ WSGI_APPLICATION = 'nmc.wsgi.application'
 
 TEMPLATE_DIRS = (
     '/var/www/djangdjango/nmc/network/templates',
+    '/Users/Carlos/nmc_tacc/NMC_TACC_visualization/network/templates',
+    '/Users/Carlos/nmc_tacc/NMC_TACC_visualization/Charts/templates',
 )
 
 INSTALLED_APPS = (
@@ -114,8 +117,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'jquery',
+    #'jquery',
     'network',
+    'Charts',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
