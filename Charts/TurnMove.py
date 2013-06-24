@@ -66,36 +66,36 @@ def setDirection(movement, c):
     c.execute(query)
     topoints = str(c.fetchone()[0])
     frompoints, topoints = formatPath(frompoints), formatPath(topoints)
-    dx, dy = frompoints[2] - frompoints[0], frompoints[3] - frompoints[1]
+    dx, dy = frompoints[2] - frompoints[0], frompoints[3] - frompoints[1] 
     dx2, dy2 = topoints[2] - topoints[0], topoints[3] - topoints[1]
-    if abs(dx) < abs(dy): 
+
+    if abs(dx) < abs(dy):
         if dy < 0:
             direction = "south"
         else:
             direction = "north"
-    elif dx < 0:
+    elif dx < 0 :
         direction = "west"
     else: 
         direction = "east"
-        
-    if abs(dx2) > abs(dy2) and direction == "north" or direction == "south":
+
+    if abs(dx2) > abs(dy2) and (direction == "north" or direction == "south"):
         if direction == "north" and dx2 > 0:
             turn = "right"
         elif direction == "south" and dx2 < 0:
             turn = "right"
         else:
             turn = "left"
-            
-    elif abs(dx2) < abs(dy2) and direction == "east" or direction == "west":
+    elif abs(dx2) < abs(dy2) and (direction == "east" or direction == "west"):
         if direction == "west" and dy2 < 0:
-            turn = "right"
-        elif direction == "east" and dy2 > 0:
-            turn = "right"
-        else:
             turn = "left"
+        elif direction == "east" and dy2 > 0:
+            turn = "left"
+        else:
+            turn = "right"
     else:
         turn = "through"
-    movement.direction = turn 
+    movement.direction = turn
                  
 def loadfile(simvat, mmap):
     mmap = movemap() 
