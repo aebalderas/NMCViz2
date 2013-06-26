@@ -1,4 +1,4 @@
-import  numpy, pickle
+#import  numpy, pickle
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
@@ -6,7 +6,7 @@ from django.db import models
 from django import forms
 from django.utils import simplejson 
 import psycopg2, sqlite3
-from TDD import *
+#from TDD import *
 import os
 
 from network.models import Network

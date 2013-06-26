@@ -1,5 +1,5 @@
 import struct
-import numpy
+#import numpy
 
 IS_FLOAT = 83289021
 
