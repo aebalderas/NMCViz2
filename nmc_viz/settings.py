@@ -12,11 +12,11 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/Users/Aaron/Development/nmc_viz/sqlite.db',
-        'USER': '',          
-        'PASSWORD': '',     
-        'HOST': '',        
-        'PORT': '',       
+        'NAME': '/Users/Aaron/Documents/GitHub/NMCViz2/sqlite.db',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
     }
 }
 
@@ -56,7 +56,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/Users/Aaron/Development/nmc_viz/Charts/static'
+STATIC_ROOT = '/Users/Aaron/Documents/GitHub/NMCViz2/Charts/static'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -64,7 +64,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    '/Users/Aaron/Development/nmc_viz/network/static',
+    '/Users/Aaron/Documents/GitHub/NMCViz2/network/static',
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -104,7 +104,7 @@ ROOT_URLCONF = 'nmc_viz.urls'
 WSGI_APPLICATION = 'nmc_viz.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/Users/Aaron/Development/nmc_viz/Charts/templates',
+    '/Users/Aaron/Documents/GitHub/NMCViz2/Charts/templates',
 )
 
 INSTALLED_APPS = (

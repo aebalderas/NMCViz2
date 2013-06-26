@@ -1,6 +1,8 @@
 #--------------------
 # /results/Results.py
 # Carlos I. Balderas
+# +
+# Aaron E. Balderas
 #--------------------
 import psycopg2
 #from TDD import *
@@ -44,13 +46,16 @@ def getReqs(cur, tname, rtype):
         assert c.fetchone()[0] != 0
     except:
         raise RuntimeError("table %s is empty") % (tname)
-     
+
     query = "SELECT exists (SELECT 1 FROM pg_type WHERE typname = '%s');" % (rtype)
     c.execute(query)
     try:
         assert c.fetchone()[0] is True
     except:
         raise RuntimeError("type %s does not exist in the database") % (rtype)
+
+def getDistance(cur, n, s, e):
+    pass
 
 def getCorridorTimes(cur, n, s, e):
     "will store results in type { id: [name, field_tt, model_time, err_min, err_perc, starttime, endtime] }"
@@ -61,7 +66,7 @@ def getCorridorTimes(cur, n, s, e):
         assert c.fetchone is not None
     except:
         raise RuntimeError("This query did not work")
-  
+
     results = {}
     names = ["id", "name", "field_time", "model_time",
              "error_minutes", "error_percentage", "start", "end"]
@@ -71,19 +76,19 @@ def getCorridorTimes(cur, n, s, e):
         for item in row:
             temp[names[i]] = item
             i += 1
-        
+
         results[temp['id']] = temp
     return {'data': results, 'networkName': n}
-    
+
 def mapLinkSubset(link_map, links):
     mapped_links = []
     for link in links:
         mapped_links.append(operator.indexOf(link_map, link))
     return mapped_links
-    
+
 def unmap(link_map, link):
     return link_map[link]
-    
+
 def getVolumeData(links, tddld, tddDataList):
     data = {}
     for link in links:
@@ -92,10 +97,10 @@ def getVolumeData(links, tddld, tddDataList):
         for subset in tddDataList:
             temp[count] = subset[link]
             count += 1
-               
+
         data[unmap(tddld, link)] = temp
     return data
-    
+
 def getFlow(cur, l, s, e):
     c = cur
     query = "SELECT flow FROM link_flow_out(%i) WHERE timestep IN (%i, %i);" % (l, s, e)
@@ -112,14 +117,14 @@ def compVolume(cur, cb, n, s, e, links):
     except:
         raise RuntimeError("Query did not work")
     results = {}
-    names = ["id", "from", "to", "count", "flow"]   
+    names = ["id", "from", "to", "count", "flow"]
     for row in c:
-        if row[0] not in links: 
+        if row[0] not in links:
             continue
         flow = getFlow(cb, row[0], s, e)
         temp = {}
         i = 0
-        for item in row:  
+        for item in row:
             temp[names[i]] = item
             i += 1
         temp[names[i]] = flow

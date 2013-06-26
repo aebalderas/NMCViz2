@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>Corridor Travel Time Information</title>
+<title>Travel Distance Information</title>
 {% endblock%}
 
 {% block content %}
@@ -13,7 +13,7 @@
       <div>
         <h2>
           <span><img class= "icon" src="{{ STATIC_URL }}images/TravelTimeIcon.png" /></span>
-          Corridor Travel Times
+          Travel Distance
         </h2>
       </div>
     </div>
@@ -21,7 +21,7 @@
 
   <div class="row">
     <div class="span12 ">
-      <form action="{% url "pretraveltime" %}" method="post">{% csrf_token %}
+      <form action="{% url "predistance" %}" method="post">{% csrf_token %}
         {{ form.as_p }}
         <input class="btn" type="submit" value="Submit"/>
       </form>
@@ -33,4 +33,3 @@
 
 </div> <!-- /container -->
 {% endblock %}
-  

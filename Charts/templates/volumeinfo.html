@@ -14,23 +14,22 @@
         <h2>
           <span><img class= "icon" src="{{ STATIC_URL }}images/CountsIcon.png" /></span>
           Volume and Capacity
-        </h2> 
-      </div>  
+        </h2>
+      </div>
     </div>
   </div><!--Row-->
-  
+
   <div class="row">
     <div class="span12 ">
-      <form action="{% url prevolume %}" method="post">{% csrf_token %}
+      <form action="{% url "prevolume" %}" method="post">{% csrf_token %}
         {{ form.as_p }}
         <input class="btn" type="submit" value="Submit"/>
       </form>
     </div>
   </div>
 
-  <footer> 
+  <footer>
   </footer>
 
 </div> <!-- /container -->
 {% endblock %}
-  

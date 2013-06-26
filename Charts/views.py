@@ -1,6 +1,6 @@
 #NMCharts/Charts
 from django.http import HttpResponse, HttpResponseRedirect
-from django import forms 
+from django import forms
 from django.template import Context
 from Results import *
 from TurnMove import *
@@ -32,26 +32,63 @@ class TravelTimeForm(forms.Form):
     start = forms.IntegerField(min_value=0)
     end = forms.IntegerField(max_value=10800)
 
+class DistanceForm(forms.Form):
+    network = forms.CharField(max_length=100)
+    host = forms.CharField(max_length=64)
+    user = forms.CharField(max_length=64)
+    password = forms.CharField(max_length=64)
+    start = forms.IntegerField(min_value=0)
+    end = forms.IntegerField(max_value=10800)
+
+
 def hellocharts(request):
     return render(request, 'charts.html')
-    
+
 def basetest(request):
     return render(request, 'base.html')
-  
+
+def distanceInfo(request):
+    form = DistanceForm()
+    return render(request, 'distanceInfo.html', {'form': form})
+
 def turnMoveInfo(request):
     form = TurnMoveForm()
     return render(request, 'turnmoveinfo.html', {'form': form})
-    
+
 def travelTimeInfo(request):
     form = TravelTimeForm()
     return render(request, 'traveltimeinfo.html', {'form': form})
-    
+
 def volumeCountsInfo(request):
     form = VolumeForm()
     return render(request, 'volumeinfo.html', {'form': form})
-  
+
+def preDistance(request):
+    if request.method == 'POST':
+        form = DistanceForm(request.POST)
+        if form.is_valid():
+            network = form.cleaned_data['network']
+            host = form.cleaned_data['host']
+            user = form.cleaned_data['user']
+            pwd = form.cleaned_data['password']
+            start = form.cleaned_data['start']
+            end = form.cleaned_data['end']
+        try:
+            c = login(host, user, pwd, network)
+            c.close()
+        except:
+            return HttpResponseRedirect('/charts/dberror/')
+        try:
+            context = {'network': network, 'host': host, 'user': user,
+                       'pwd': pwd, 'start': start, 'end': end}
+            return render(request, 'distance.html', context)
+        except:
+            return HttpResponseRedirect('/charts/error/')
+    else:
+        form = DistanceForm()
+    return render(request, 'distanceInfo.html', {'form': form})
+
 def preTurnMove(request):
-    
     if request.method == 'POST':
         form = TurnMoveForm(request.POST)
         if form.is_valid():
@@ -61,14 +98,14 @@ def preTurnMove(request):
             pwd = form.cleaned_data['password']
             simvat = form.cleaned_data['simvat']
             links = form.cleaned_data['links']
-        try: 
+        try:
             c = login(host, user, pwd, network)
         except:
             return HttpResponseRedirect('/charts/dberror/')
         try:
-            context = {'network': network, 'host': host, 'user': user, 
+            context = {'network': network, 'host': host, 'user': user,
                        'pwd': pwd, 'simvat': simvat, 'links': links}
-            return render(request, 'turnmove.html', context)              
+            return render(request, 'turnmove.html', context)
         except:
             return HttpResponseRedirect('/charts/error/')
     else:
@@ -92,16 +129,16 @@ def preVolume(request):
         except:
             return HttpResponseRedirect('/charts/dberror/')
         try:
-            context = {'network': network, 'host': host, 'user': user, 
+            context = {'network': network, 'host': host, 'user': user,
                        'pwd': pwd, 'start': start, 'end': end, 'links': links}
-            
+
             return render(request, 'volume.html', context)
         except:
             return HttpResponseRedirect('/charts/error/')
     else:
         form = VolumeForm()
     return render(request, 'volumeinfo.html', {'form': form})
- 
+
 def preTravelTime(request):
     if request.method == 'POST':
         form = TravelTimeForm(request.POST)
@@ -117,8 +154,8 @@ def preTravelTime(request):
             c.close()
         except:
             return HttpResponseRedirect('/charts/dberror/')
-        try: 
-            context = {'network': network, 'host': host, 'user': user, 
+        try:
+            context = {'network': network, 'host': host, 'user': user,
                        'pwd': pwd, 'start': start, 'end': end}
             return render(request, 'traveltime.html', context)
         except:
@@ -127,6 +164,14 @@ def preTravelTime(request):
         form = TravelTimeForm()
     return render(request, 'traveltimeinfo.html', {'form': form})
 
+def loaddistance(request, network, host, pwd, user, start, end):
+    start = int(start)
+    end = int(end)
+    c = login(host, user, pwd, network)
+    distance = getDistance(c, network, start, end) # called in Results.py
+    chartdata = simplejson.dumps(distance)
+    c.close()
+    return HttpResponse(chartdata, mimetype='application/json')
 
 def loadvolume(request, network, host, pwd, user, links, start, end):
     c = login(host, user, pwd, network)
@@ -150,7 +195,6 @@ def loadtraveltime(request, network, host, pwd, user, start, end):
     return HttpResponse(chartdata, mimetype='application/json')
 
 def loadturnmove(request, network, host, pwd, user, links):
-   
     turns = {}
     moves = {}
     numlinks = links.split(',')
@@ -161,7 +205,7 @@ def loadturnmove(request, network, host, pwd, user, links):
     mmap = loadfile(simvat, mmap)
     for link in numlinks:
         link = int(link)
-        moves = mmap.movesFromLink(link) 
+        moves = mmap.movesFromLink(link)
         for x in moves:
             setDirection(x, c)
             temp = x.getInfo()
