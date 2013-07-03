@@ -13,7 +13,6 @@ DEC2FLOAT = psycopg2.extensions.new_type(
     lambda value, curs: float(value) if value is not None else None)
 psycopg2.extensions.register_type(DEC2FLOAT)
 
-
 def login(h, u, p, d):
     """Logs into database and returns a cursor"""
     a = psycopg2.connect(host=h, user=u, password=p, database=d)
@@ -33,7 +32,8 @@ def getNetworks(c):
 
 def getReqs(cur, tname, rtype):
     c = cur
-    query = "SELECT EXISTS(SELECT * FROM information_schema.tables WHERE table_name='%s'); " % (tname)
+    query = "SELECT EXISTS(SELECT * FROM information_schema.tables WHERE\
+             table_name='%s'); " % (tname)
     c.execute(query)
     try:
         assert c.fetchone()[0] is True
@@ -47,18 +47,58 @@ def getReqs(cur, tname, rtype):
     except:
         raise RuntimeError("table %s is empty") % (tname)
 
-    query = "SELECT exists (SELECT 1 FROM pg_type WHERE typname = '%s');" % (rtype)
+    query = ("SELECT exists (SELECT 1 FROM pg_type WHERE typname = '%s');" %
+             (rtype))
     c.execute(query)
     try:
         assert c.fetchone()[0] is True
     except:
         raise RuntimeError("type %s does not exist in the database") % (rtype)
 
-def getDistance(cur, n, s, e):
+def getAvgODTimes(cur, n, odPairs):
     pass
 
+def getDistance(cur, n, routes):
+    """
+    Will get results in tuple form: (ID, distance).
+    Function returns distance.
+    """
+    c = cur
+    # what are 7200 and 8100 for? currently hard-coded? --> str mod
+    query = "select distinct (route), sum(length/5280*(c.flow-d.flow))\
+             from bus_route_link a, linkdetails b,links_flow_out (8100) c,\
+             links_flow_out(7200) d where c.linkid=d.linkid and c.linkid=b.id\
+             and b.id=a.link group by route;"
+    c.execute(query)
+    routes = str(routes) # refactor --> faster way to do this
+    try:
+        routes = [int(item) for item in (routes.split(','))]
+    except:
+        pass # user put in a single route?
+    print 'routes: ', routes
+    print
+    #queryData = [tup for tup in c if (tup[0] in routes) or (tup[0] == routes)]
+    # try to refactor into dict comprehension below
+    queryData = {}
+    for tup in c:
+        if tup[0] in routes or tup[0] == routes:
+            queryData['%i'%(tup[0])] = tup[1]
+    print 'queryData: ', queryData
+    print
+    # modify the following test case, might split into two different tests
+    try:
+        assert(c.fetchone is not None and len(queryData) > 0)
+    except:
+        raise RuntimeError("This query did not work")
+    print {'data': queryData, 'networkName': n}
+    print
+    return {'data': queryData, 'networkName': n}
+
 def getCorridorTimes(cur, n, s, e):
-    "will store results in type { id: [name, field_tt, model_time, err_min, err_perc, starttime, endtime] }"
+    """
+    Will store results in type { id: [name, field_tt, model_time, err_min,\
+    err_perc, starttime, endtime] }
+    """
     c = cur
     query = "SELECT * FROM compare_t_times(%i, %i);" % (s, e)
     c.execute(query)
@@ -66,7 +106,6 @@ def getCorridorTimes(cur, n, s, e):
         assert c.fetchone is not None
     except:
         raise RuntimeError("This query did not work")
-
     results = {}
     names = ["id", "name", "field_time", "model_time",
              "error_minutes", "error_percentage", "start", "end"]
@@ -76,7 +115,6 @@ def getCorridorTimes(cur, n, s, e):
         for item in row:
             temp[names[i]] = item
             i += 1
-
         results[temp['id']] = temp
     return {'data': results, 'networkName': n}
 
@@ -103,14 +141,16 @@ def getVolumeData(links, tddld, tddDataList):
 
 def getFlow(cur, l, s, e):
     c = cur
-    query = "SELECT flow FROM link_flow_out(%i) WHERE timestep IN (%i, %i);" % (l, s, e)
+    query = ("SELECT flow FROM link_flow_out(%i) WHERE timestep IN (%i, %i);" %
+             (l, s, e))
     c.execute(query)
     results = c.fetchall()
     return results[1][0] - results[0][0]
 
 def compVolume(cur, cb, n, s, e, links):
     c = cur
-    query = "SELECT * FROM link_volume_data WHERE from_sec = %i AND to_sec = %i;" % (s, e)
+    query = "SELECT * FROM link_volume_data WHERE from_sec = %i AND\
+             to_sec = %i;" % (s, e)
     c.execute(query)
     try:
         assert c.fetchone is not None

@@ -37,9 +37,16 @@ class DistanceForm(forms.Form):
     host = forms.CharField(max_length=64)
     user = forms.CharField(max_length=64)
     password = forms.CharField(max_length=64)
-    start = forms.IntegerField(min_value=0)
-    end = forms.IntegerField(max_value=10800)
+    route = forms.CharField(max_length=99999999)
 
+class ODTimesForm(forms.Form):
+    network = forms.CharField(max_length=100)
+    host = forms.CharField(max_length=64)
+    user = forms.CharField(max_length=64)
+    password = forms.CharField(max_length=64)
+    route = forms.CharField(max_length=99999999)
+    origins = forms.CharField(max_length=64)
+    destinations = forms.CharField(max_length=64)
 
 def hellocharts(request):
     return render(request, 'charts.html')
@@ -47,9 +54,13 @@ def hellocharts(request):
 def basetest(request):
     return render(request, 'base.html')
 
+def odTimesInfo(request):
+    form = ODTimesForm()
+    return render(request, 'odtimesinfo.html', {'form': form})
+
 def distanceInfo(request):
     form = DistanceForm()
-    return render(request, 'distanceInfo.html', {'form': form})
+    return render(request, 'distanceinfo.html', {'form': form})
 
 def turnMoveInfo(request):
     form = TurnMoveForm()
@@ -71,8 +82,7 @@ def preDistance(request):
             host = form.cleaned_data['host']
             user = form.cleaned_data['user']
             pwd = form.cleaned_data['password']
-            start = form.cleaned_data['start']
-            end = form.cleaned_data['end']
+            route = form.cleaned_data['route']
         try:
             c = login(host, user, pwd, network)
             c.close()
@@ -80,13 +90,13 @@ def preDistance(request):
             return HttpResponseRedirect('/charts/dberror/')
         try:
             context = {'network': network, 'host': host, 'user': user,
-                       'pwd': pwd, 'start': start, 'end': end}
+                       'pwd': pwd, 'route': route}
             return render(request, 'distance.html', context)
         except:
             return HttpResponseRedirect('/charts/error/')
     else:
         form = DistanceForm()
-    return render(request, 'distanceInfo.html', {'form': form})
+    return render(request, 'distanceinfo.html', {'form': form})
 
 def preTurnMove(request):
     if request.method == 'POST':
@@ -164,12 +174,10 @@ def preTravelTime(request):
         form = TravelTimeForm()
     return render(request, 'traveltimeinfo.html', {'form': form})
 
-def loaddistance(request, network, host, pwd, user, start, end):
-    start = int(start)
-    end = int(end)
+def loaddistance(request, network, host, pwd, user, route):
     c = login(host, user, pwd, network)
-    distance = getDistance(c, network, start, end) # called in Results.py
-    chartdata = simplejson.dumps(distance)
+    distances = getDistance(c, network, route) # called in Results.py
+    chartdata = simplejson.dumps(distances)
     c.close()
     return HttpResponse(chartdata, mimetype='application/json')
 

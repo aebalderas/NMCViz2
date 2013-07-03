@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Travel Distance Information</title>
+{% endblock%}
+
+{% block content %}
+<div class="container">
+
+  <!-- Example row of columns -->
+  <div class="row">
+    <div class="span12 ">
+
+      <div>
+        <h2>
+          <span><img class= "icon" src="{{ STATIC_URL }}images/TravelTimeIcon.png" /></span>
+          Travel Distance
+        </h2>
+      </div>
+    </div>
+  </div><!--Row-->
+
+  <div class="row">
+    <div class="span12 ">
+      <form action="{% url "predistance" %}" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input class="btn" type="submit" value="Submit"/>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+  </footer>
+
+</div> <!-- /container -->
+{% endblock %}

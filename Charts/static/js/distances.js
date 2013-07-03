@@ -1,36 +1,41 @@
-var field_series = [];
-var model_series = [];
 var routes = [];
 var networkInfo =[];
+var distances = [];
+console.log('IN DISTANCE.JS');
 load_data();
 
 function load_data(){
     $.ajax({
-        url : '/charts/loadvolume/' + db + '/' + host + '/' + pwd + '/' + user + '/' + links + '/' + start + '/' + end,
+        url : '/charts/loaddistance/' + db + '/' + host + '/' + pwd + '/' + user + '/' + route,
         dataType : 'json',
         cache : false,
         success : receive_data,
         error: function() {
-	        alert("Unable to load data, See results.py, views.py, and urls.py")
+	        alert("Unable to load data, See results.py, views.py, and urls.py");
         }
     });
 }
 
 // what's going on here...
 function receive_data(json){
+	alert('JS receive_data()');
     for(var key in json.data){
-        field_series.push(json.data[key]["field_time"]);
-        model_series.push(json.data[key]["model_time"]);
-        routes.push(json.data[key]["name"]);
-        networkInfo.push(json['networkName']);
+        routes.push('Route: ' + key);
+		console.log('Route: ' + key);
+		distances.push(json.data[key]);
+		console.log(json.data[key]);
+    networkInfo.push(json['networkName']);
     }
     makeColumnChart();
+	console.log('networkInfo: ' + networkInfo);
+	console.log('routes: ' + routes);
+	console.log('distances: ' + distances);
 }
 
 function makeColumnChart(){
     $('#container').highcharts({
         chart: {
-        type: 'column'
+        type: 'bar'
         },
         title: {
             text: 'Travel Distances'
@@ -39,6 +44,7 @@ function makeColumnChart(){
             text: networkInfo[0]
         },
         xAxis: {
+			text: 'Routes',
             categories: routes
         },
         yAxis: {
@@ -61,12 +67,9 @@ function makeColumnChart(){
                 borderWidth: 0
             }
         },
-        series: [{
-            name: 'Field',
-            data: field_series
-          },{
-            name: 'Model',
-            data: model_series
-        }]
+		series: [{
+			name: 'Distance',
+			data: distances
+		}]
     });
 };

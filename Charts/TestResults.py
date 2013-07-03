@@ -2,7 +2,6 @@
 To test the program:
     python TestResults.py >& TestResults.py.out
 """
-
 import unittest
 from Results import *
 from TurnMove import *
@@ -47,56 +46,57 @@ class TestResults (unittest.TestCase):
     #    self.assertEquals(2404, self.movemapTwo.movements[4250176275].getCount())
     #    self.assertEquals(2070, self.movemapTwo.movements[627518421].getCount())
 
-    def testTurns(self):
-        self.simvat = '../NMCharts/sim.vat'
-        self.movemapTwo = movemap()
-        network = 'coacongress_current_apr2013_am'
-        c = login('nmc-compute1.ctr.utexas.edu', 'coacongress', 'coacongress00', network)
-        self.movemapTwo = loadfile(self.simvat, self.movemapTwo)
-        # TEST 1
-        moves = self.movemapTwo.movesFromLink(6275)
-        print "Moves from link 6275: ", moves
-        setDirection(moves[0], c)
-        setDirection(moves[1], c)
-        self.assertEquals("through", moves[0].direction)
-        self.assertEquals("left", moves[1].direction)
-
-        # TEST 2
-        moves = self.movemapTwo.movesFromLink(105239)
-        print "Moves from link 105239: ", moves
-        for x in moves:
-            setDirection(x, c)
-        self.assertEquals("left", moves[0].direction)
-        self.assertEquals("right", moves[1].direction)
-
-        # TEST 3
-        moves = self.movemapTwo.movesFromLink(6233)
-        print "Moves from link 6233: ", moves
-        for x in moves:
-            setDirection(x, c)
-        # id.6233: should have 3 movements: left, through, right
-        self.assertEquals("left", moves[0].direction) # left onto id.106214
-        self.assertEquals("through", moves[1].direction) # through onto id.6211
-        self.assertEquals("right", moves[2].direction) # right onto id.6212
-
-        # TEST 4
-        moves = self.movemapTwo.movesFromLink(5312)
-        print "Moves from link 5312: ", moves
-        for x in moves:
-            setDirection(x, c)
-        # id.5312 should have 2 movements: through, right
-        self.assertEquals("through", moves[0].direction) # through onto id.5311
-        self.assertEquals("right", moves[1].direction) # right onto id.114713
-
-        # TEST 5
-        moves = self.movemapTwo.movesFromLink(104888)
-        print "Moves from link 104888: ", moves
-        for x in moves:
-            setDirection(x, c)
-        # id.104888 should have 2 movements: right, through
-        self.assertEquals("right", moves[0].direction) # through onto id.4787
-        self.assertEquals("through", moves[1].direction) # right onto id.104607
-        c.close()
+    #def testTurns(self):
+    #    self.simvat = '../Charts/sim.vat' # currently local?
+    #    self.movemapTwo = movemap()
+    #    network = 'coacongress_current_apr2013_am'
+    #    c = login('nmc-compute1.ctr.utexas.edu', 'coacongress',
+    #              'coacongress00', network)
+    #    self.movemapTwo = loadfile(self.simvat, self.movemapTwo)
+    #    # TEST 1
+    #    moves = self.movemapTwo.movesFromLink(6275)
+    #    print "Moves from link 6275: ", moves
+    #    setDirection(moves[0], c)
+    #    setDirection(moves[1], c)
+    #    self.assertEquals("through", moves[0].direction)
+    #    self.assertEquals("left", moves[1].direction)
+    #
+    #    # TEST 2
+    #    moves = self.movemapTwo.movesFromLink(105239)
+    #    print "Moves from link 105239: ", moves
+    #    for x in moves:
+    #        setDirection(x, c)
+    #    self.assertEquals("left", moves[0].direction)
+    #    self.assertEquals("right", moves[1].direction)
+    #
+    #    # TEST 3
+    #    moves = self.movemapTwo.movesFromLink(6233)
+    #    print "Moves from link 6233: ", moves
+    #    for x in moves:
+    #        setDirection(x, c)
+    #    # id.6233: should have 3 movements: left, through, right
+    #    self.assertEquals("left", moves[0].direction) # left onto id.106214
+    #    self.assertEquals("through", moves[1].direction) # through onto id.6211
+    #    self.assertEquals("right", moves[2].direction) # right onto id.6212
+    #
+    #    # TEST 4
+    #    moves = self.movemapTwo.movesFromLink(5312)
+    #    print "Moves from link 5312: ", moves
+    #    for x in moves:
+    #        setDirection(x, c)
+    #    # id.5312 should have 2 movements: through, right
+    #    self.assertEquals("through", moves[0].direction) # through onto id.5311
+    #    self.assertEquals("right", moves[1].direction) # right onto id.114713
+    #
+    #    # TEST 5
+    #    moves = self.movemapTwo.movesFromLink(104888)
+    #    print "Moves from link 104888: ", moves
+    #    for x in moves:
+    #        setDirection(x, c)
+    #    # id.104888 should have 2 movements: right, through
+    #    self.assertEquals("right", moves[0].direction) # through onto id.4787
+    #    self.assertEquals("through", moves[1].direction) # right onto id.104607
+    #    c.close()
 
 
     #def test_login1(self):
@@ -146,14 +146,39 @@ class TestResults (unittest.TestCase):
     #        self.assertFalse(raised, "Requirements not met")
     #
     def testTravelDistances(self):
+        epsilon = 0.00000001
         c = login('nmc-compute2.ctr.utexas.edu', 'sh45', 'sh4500', 'sh45_calibration_tuneup')
-        distances = getDistance(c, 'sh45_calibration_tuneup', )
+        # TEST 1
+        distances = getDistance(c, 'sh45_calibration_tuneup', '9015,9016,9167,109146')
+        self.assert_(distances != None and type(distances) == dict)
+        self.assert_(abs(distances['data']['9015'] - 1613.23985783) < epsilon)
+        print "Distance of ID.9015: ", distances['data']['9015']
+        self.assert_(abs(distances['data']['9016'] - 758.784548193) < epsilon)
+        print "Distance of ID.9016: ", distances['data']['9016']
+        self.assert_(abs(distances['data']['109146'] - 648.53999298) < epsilon)
+        print "Distance of ID.109146: ", distances['data']['109146']
+        self.assert_(abs(distances['data']['9167'] - 467.530004351) < epsilon)
+        print "Distance of ID.9167: ", distances['data']['9167']
+        print "****************************************************************"
+        # TEST 2
+        distances = getDistance(c, 'sh45_calibration_tuneup', '9016')
+        self.assert_(distances != None and type(distances) == dict)
+        self.assert_(abs(distances['data']['9016'] - 758.784548193) < epsilon)
+        print "Distance of ID.9016: ", distances['data']['9016']
+        print "****************************************************************"
+        # TEST 3
+        distances = getDistance(c, 'sh45_calibration_tuneup', '9105,109146')
+        self.assert_(distances != None and type(distances) == dict)
+        self.assert_(abs(distances['data']['9105'] - 2070.36412406) < epsilon)
+        print "Distance of ID.9105: ", distances['data']['9105']
+        self.assert_(abs(distances['data']['109146'] - 648.53999298) < epsilon)
+        print "Distance of ID.109146: ", distances['data']['109146']
 
-    def test_compareCorridorTimes(self):
-        c = login('nmc-compute2.ctr.utexas.edu', 'vista', 'vista00', 'vista_calibration_tuneup')
-        times = getCorridorTimes(c,'vista_calibration_tuneup', 0, 900)
-        c.close()
-        self.assert_(times != None)
+    #def test_compareCorridorTimes(self):
+    #    c = login('nmc-compute2.ctr.utexas.edu', 'vista', 'vista00', 'vista_calibration_tuneup')
+    #    times = getCorridorTimes(c,'vista_calibration_tuneup', 0, 900)
+    #    c.close()
+    #    self.assert_(times != None)
 
 
     #def test_mapLinkSubset(self):
@@ -210,20 +235,28 @@ class TestResults (unittest.TestCase):
     #    c.close()
     #    self.assert_(flow == 699)
     #
-    def test_compVolume(self):
-        c = login('nmc-compute1.ctr.utexas.edu', 'coacongress', 'coacongress00', 'coacongress_current_apr2013_am')
-        cb = login('nmc-compute1.ctr.utexas.edu', 'coacongress', 'coacongress00', 'coacongress_current_apr2013_am')
-        results = compVolume(c,cb,  'coacongress_current_apr2013_am', 5400, 6300, [105220, 18184, 105210, 105173])
-        c.close()
-        cb.close()
-        self.assert_(results == {'data': {18184: {'count': 163.0, 'to': 6300, 'flow': 192, 'from': 5400, 'id': 18184},
-                                          105210: {'count': 159.0, 'to': 6300, 'flow': 131, 'from': 5400, 'id':105210},
-                                          105220: {'count': 66.0, 'to': 6300, 'flow': 160, 'from': 5400, 'id': 105220},
-                                          105173: {'count': 278.0, 'to': 6300, 'flow': 76, 'from': 5400, 'id': 105173}},
-                                 'networkName' : 'coacongress_current_apr2013_am'})
 
+    # this test runs REALLY slowly --> check compVolume() in Results.py
+    #def test_compVolume(self):
+    #    print "starting test_compVolume(). Computing..."
+    #    c = login('nmc-compute1.ctr.utexas.edu', 'coacongress', 'coacongress00', 'coacongress_current_apr2013_am')
+    #    cb = login('nmc-compute1.ctr.utexas.edu', 'coacongress', 'coacongress00', 'coacongress_current_apr2013_am')
+    #    results = compVolume(c,cb,  'coacongress_current_apr2013_am', 5400, 6300, [105220, 18184, 105210, 105173])
+    #    c.close()
+    #    cb.close()
+    #    print "...information accessed!"
+    #    self.assert_(results == {'data': {18184: {'count': 163.0, 'to': 6300, 'flow': 192, 'from': 5400, 'id': 18184},
+    #                                      105210: {'count': 159.0, 'to': 6300, 'flow': 131, 'from': 5400, 'id':105210},
+    #                                      105220: {'count': 66.0, 'to': 6300, 'flow': 160, 'from': 5400, 'id': 105220},
+    #                                      105173: {'count': 278.0, 'to': 6300, 'flow': 76, 'from': 5400, 'id': 105173}},
+    #                             'networkName' : 'coacongress_current_apr2013_am'})
+    #    print "complete!"
 
-
-print "TestResults.py"
+print "Running TestResults.py..."
+print ""
+print "************************************************************************"
+print "************************************************************************"
+print "************************************************************************"
+print ""
 unittest.main()
-print "Done."
+print "Done. Passed all Tests."
