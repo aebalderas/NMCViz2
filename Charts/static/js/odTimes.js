@@ -1,11 +1,12 @@
-var routes = [];
+var odPairs = [];
 var networkInfo =[];
-var distances = [];
+var pairTimes = [];
 load_data();
 
 function load_data(){
     $.ajax({
-        url : '/charts/loaddistance/' + db + '/' + host + '/' + pwd + '/' + user + '/' + route,
+        url : '/charts/loadodtimes/' + db + '/' + host + '/' + pwd + '/' +
+		       user + '/' + origins + '/' + destinations,
         dataType : 'json',
         cache : false,
         success : receive_data,
@@ -18,8 +19,10 @@ function load_data(){
 // what's going on here...
 function receive_data(json){
     for(var key in json.data){
-        routes.push('Route: ' + key);
-		distances.push(json.data[key]);
+        odPairs.push('OD-Pairs: ' + key);
+		console.log('OD-Pairs: ' + key);
+		pairTimes.push(json.data[key]);
+		console.log(json.data[key]);
     networkInfo.push(json['networkName']);
     }
     makeColumnChart();
@@ -28,21 +31,21 @@ function receive_data(json){
 function makeColumnChart(){
     $('#container').highcharts({
         chart: {
-        type: 'bar'
+        type: 'column'
         },
         title: {
-            text: 'Travel Distances'
+            text: 'Origin-Destination Travel Time Comparison'
         },
         subtitle: {
             text: networkInfo[0]
         },
         xAxis: {
-            categories: routes
+            categories: odPairs
         },
         yAxis: {
             min: 0,
             title: {
-                text: 'Distance'
+                text: 'Travel Time'
             }
         },
         tooltip: {
@@ -60,8 +63,8 @@ function makeColumnChart(){
             }
         },
 		series: [{
-			name: 'Distance',
-			data: distances
+			name: 'Travel Time',
+			data: pairTimes
 		}]
     });
 };

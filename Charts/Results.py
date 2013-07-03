@@ -6,7 +6,7 @@
 #--------------------
 import psycopg2
 #from TDD import *
-
+import time
 DEC2FLOAT = psycopg2.extensions.new_type(
     psycopg2.extensions.DECIMAL.values,
     'DEC2FLOAT',
@@ -55,8 +55,29 @@ def getReqs(cur, tname, rtype):
     except:
         raise RuntimeError("type %s does not exist in the database") % (rtype)
 
-def getAvgODTimes(cur, n, odPairs):
-    pass
+def getODTimes(cur, n, origins, destinations):
+    c = cur
+    query = "Select origin,dest,avg(sim_exittime-sim_departure)/60 from\
+             vehicle_path_time a, vehicle_path b where b.id=a.sim_path and\
+             sim_departure>3600 and sim_departure<=8100 group by origin, dest;"
+    c.execute(query)
+    try:
+        origins = [int(item) for item in (origins.split(','))]
+        destinations = [int(item) for item in (destinations.split(','))]
+        odPairs = zip(origins, destinations)
+    except:
+        pass # user put in a single route?
+    times = []
+    queryData = {}
+    for triple in c:
+        for i in xrange(len(origins)):
+            if (triple[0] == odPairs[i][0]) and (triple[1] == odPairs[i][1]):
+                queryData[str(odPairs[i])] = triple[2]
+    try:
+        assert(c.fetchone is not None and len(queryData) > 0)
+    except:
+        raise RuntimeError("This query did not work")
+    return {'data': queryData, 'networkName': n}
 
 def getDistance(cur, n, routes):
     """
@@ -90,8 +111,6 @@ def getDistance(cur, n, routes):
         assert(c.fetchone is not None and len(queryData) > 0)
     except:
         raise RuntimeError("This query did not work")
-    print {'data': queryData, 'networkName': n}
-    print
     return {'data': queryData, 'networkName': n}
 
 def getCorridorTimes(cur, n, s, e):

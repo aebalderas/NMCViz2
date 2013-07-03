@@ -145,34 +145,80 @@ class TestResults (unittest.TestCase):
     #        c.close()
     #        self.assertFalse(raised, "Requirements not met")
     #
-    def testTravelDistances(self):
+    #def testTravelDistances(self):
+    #    epsilon = 0.00000001
+    #    c = login('nmc-compute2.ctr.utexas.edu', 'sh45', 'sh4500', 'sh45_calibration_tuneup')
+    #    # TEST 1
+    #    distances = getDistance(c, 'sh45_calibration_tuneup', '9015,9016,9167,109146')
+    #    self.assert_(distances != None and type(distances) == dict)
+    #    self.assert_(abs(distances['data']['9015'] - 1613.23985783) < epsilon)
+    #    print "Distance of ID.9015: ", distances['data']['9015']
+    #    self.assert_(abs(distances['data']['9016'] - 758.784548193) < epsilon)
+    #    print "Distance of ID.9016: ", distances['data']['9016']
+    #    self.assert_(abs(distances['data']['109146'] - 648.53999298) < epsilon)
+    #    print "Distance of ID.109146: ", distances['data']['109146']
+    #    self.assert_(abs(distances['data']['9167'] - 467.530004351) < epsilon)
+    #    print "Distance of ID.9167: ", distances['data']['9167']
+    #    print "****************************************************************"
+    #    # TEST 2
+    #    distances = getDistance(c, 'sh45_calibration_tuneup', '9016')
+    #    self.assert_(distances != None and type(distances) == dict)
+    #    self.assert_(abs(distances['data']['9016'] - 758.784548193) < epsilon)
+    #    print "Distance of ID.9016: ", distances['data']['9016']
+    #    print "****************************************************************"
+    #    # TEST 3
+    #    distances = getDistance(c, 'sh45_calibration_tuneup', '9105,109146')
+    #    self.assert_(distances != None and type(distances) == dict)
+    #    self.assert_(abs(distances['data']['9105'] - 2070.36412406) < epsilon)
+    #    print "Distance of ID.9105: ", distances['data']['9105']
+    #    self.assert_(abs(distances['data']['109146'] - 648.53999298) < epsilon)
+    #    print "Distance of ID.109146: ", distances['data']['109146']
+
+    def testODTimes(self):
+        #print 'TESTING getODTimes() IN Results.py...'
         epsilon = 0.00000001
-        c = login('nmc-compute2.ctr.utexas.edu', 'sh45', 'sh4500', 'sh45_calibration_tuneup')
+        c = login('nmc-compute2.ctr.utexas.edu',
+                  'sh45', 'sh4500', 'sh45_calibration_tuneup')
         # TEST 1
-        distances = getDistance(c, 'sh45_calibration_tuneup', '9015,9016,9167,109146')
-        self.assert_(distances != None and type(distances) == dict)
-        self.assert_(abs(distances['data']['9015'] - 1613.23985783) < epsilon)
-        print "Distance of ID.9015: ", distances['data']['9015']
-        self.assert_(abs(distances['data']['9016'] - 758.784548193) < epsilon)
-        print "Distance of ID.9016: ", distances['data']['9016']
-        self.assert_(abs(distances['data']['109146'] - 648.53999298) < epsilon)
-        print "Distance of ID.109146: ", distances['data']['109146']
-        self.assert_(abs(distances['data']['9167'] - 467.530004351) < epsilon)
-        print "Distance of ID.9167: ", distances['data']['9167']
-        print "****************************************************************"
-        # TEST 2
-        distances = getDistance(c, 'sh45_calibration_tuneup', '9016')
-        self.assert_(distances != None and type(distances) == dict)
-        self.assert_(abs(distances['data']['9016'] - 758.784548193) < epsilon)
-        print "Distance of ID.9016: ", distances['data']['9016']
-        print "****************************************************************"
-        # TEST 3
-        distances = getDistance(c, 'sh45_calibration_tuneup', '9105,109146')
-        self.assert_(distances != None and type(distances) == dict)
-        self.assert_(abs(distances['data']['9105'] - 2070.36412406) < epsilon)
-        print "Distance of ID.9105: ", distances['data']['9105']
-        self.assert_(abs(distances['data']['109146'] - 648.53999298) < epsilon)
-        print "Distance of ID.109146: ", distances['data']['109146']
+        #print "TEST 1..."
+        timeData = getODTimes(c, 'sh45_calibration_tuneup',
+                                 '124618,124618,100542',
+                                 '200084,200085,201087')
+        self.assert_(timeData != None and type(timeData) == dict)
+        self.assert_(timeData['networkName'] == 'sh45_calibration_tuneup')
+        self.assert_(abs(timeData['data']['(124618,200085)'] -
+                         9.64649122807) < epsilon)
+        self.assert_(abs(timeData['data']['(124618,200084)'] - 7.8) < epsilon)
+        self.assert_(abs(timeData['data']['(100542,201087)'] - 9.85) < epsilon)
+        #print "...TEST 1 PASSED."
+        ## TEST 2
+        #print "TEST 2..."
+        timeData = getODTimes(c, 'sh45_calibration_tuneup',
+                                 '124618,124618,100057,124618,100057,100063',
+                                 '200074,200077,200099,200088,200101,200099')
+        self.assert_(timeData != None and type(timeData) == dict)
+        self.assert_(timeData['networkName'] == 'sh45_calibration_tuneup')
+        self.assert_(abs(timeData['data']['(124618,200074)'] -
+                                           11.162745098) < epsilon)
+        self.assert_(abs(timeData['data']['(124618,200077)'] - 11.05) < epsilon)
+        self.assert_(abs(timeData['data']['(100057,200099)'] -
+                                           12.403333333) < epsilon)
+        self.assert_(abs(timeData['data']['(124618,200088)'] -
+                                           9.5111111111) < epsilon)
+        self.assert_(abs(timeData['data']['(100057,200101)'] -
+                                           16.233333333) < epsilon)
+        self.assert_(abs(timeData['data']['(100063,200099)'] -
+                                           14.583333333) < epsilon)
+        #print "...TEST 2 PASSED."
+        ## TEST 3
+        #print "TEST 3..."
+        timeData = getODTimes(c, 'sh45_calibration_tuneup', '124618', '200077')
+        self.assert_(timeData != None and type(timeData) == dict)
+        self.assert_(timeData['networkName'] == 'sh45_calibration_tuneup')
+        self.assert_(abs(timeData['data'][(124618,200077)] - 11.05) < epsilon)
+        #print "...TEST 3 PASSED."
+        #print '\ngetODTimes() PASSED ALL TESTS.'
+
 
     #def test_compareCorridorTimes(self):
     #    c = login('nmc-compute2.ctr.utexas.edu', 'vista', 'vista00', 'vista_calibration_tuneup')

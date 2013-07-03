@@ -8,7 +8,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = patterns('',
     url(r'^$', hellocharts, name='charts'),
 
-    url(r'^odtimeinfo/$', odTimesInfo, name='odtimesinfo'),
+    url(r'^odtimesinfo/$', odTimesInfo, name='odtimesinfo'),
     url(r'^distanceinfo/$', distanceInfo, name='distanceinfo'),
     url(r'^turnmoveinfo/$', turnMoveInfo, name='turnmoveinfo'),
     url(r'^traveltimeinfo/$', travelTimeInfo, name='traveltimeinfo'),
@@ -16,6 +16,9 @@ urlpatterns = patterns('',
 
     url(r'^predistance/$', preDistance, name='predistance'),
     url(r'^loaddistance/(?P<network>.+)/(?P<host>.+)/(?P<pwd>.+)/(?P<user>.+)/(?P<route>.+)$', loaddistance),
+
+    url(r'^preodtimes/$', preODTimes, name='preodtimes'),
+    url(r'^loadodtimes/(?P<network>.+)/(?P<host>.+)/(?P<pwd>.+)/(?P<user>.+)/(?P<origins>.+)/(?P<destinations>.+)$', loadodtimes),
 
     url(r'^pretraveltime/$', preTravelTime, name='pretraveltime'),
     url(r'^loadtraveltime/(?P<network>.+)/(?P<host>.+)/(?P<pwd>.+)/(?P<user>.+)/(?P<start>.+)/(?P<end>.+)$', loadtraveltime),

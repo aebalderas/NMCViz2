@@ -44,7 +44,6 @@ class ODTimesForm(forms.Form):
     host = forms.CharField(max_length=64)
     user = forms.CharField(max_length=64)
     password = forms.CharField(max_length=64)
-    route = forms.CharField(max_length=99999999)
     origins = forms.CharField(max_length=64)
     destinations = forms.CharField(max_length=64)
 
@@ -73,6 +72,32 @@ def travelTimeInfo(request):
 def volumeCountsInfo(request):
     form = VolumeForm()
     return render(request, 'volumeinfo.html', {'form': form})
+
+def preODTimes(request):
+    if request.method == 'POST':
+        form = ODTimesForm(request.POST)
+        if form.is_valid():
+            network = form.cleaned_data['network']
+            host = form.cleaned_data['host']
+            user = form.cleaned_data['user']
+            pwd = form.cleaned_data['password']
+            origins = form.cleaned_data['origins']
+            destinations = form.cleaned_data['destinations']
+        try:
+            c = login(host, user, pwd, network)
+            c.close()
+        except:
+            return HttpResponseRedirect('/charts/dberror/')
+        try:
+            context = {'network': network, 'host': host,
+                       'user': user, 'pwd': pwd,
+                       'origins': origins, 'destinations': destinations}
+            return render(request, 'odtimes.html', context)
+        except:
+            return HttpResponseRedirect('/charts/error/')
+    else:
+        form = ODTimesForm()
+    return render(request, 'odtimesinfo.html', {'form': form})
 
 def preDistance(request):
     if request.method == 'POST':
@@ -173,6 +198,14 @@ def preTravelTime(request):
     else:
         form = TravelTimeForm()
     return render(request, 'traveltimeinfo.html', {'form': form})
+
+def loadodtimes(request, network, host, pwd, user, origins, destinations):
+    c = login(host, user, pwd, network)
+    timeData = getODTimes(c, network, origins, destinations)
+    print 'timeData: ',timeData
+    chartdata = simplejson.dumps(timeData)
+    c.close()
+    return HttpResponse(chartdata, mimetype='application/json')
 
 def loaddistance(request, network, host, pwd, user, route):
     c = login(host, user, pwd, network)
